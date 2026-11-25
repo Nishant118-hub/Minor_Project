@@ -36,14 +36,15 @@ async function seedUsers(departments) {
 
   const users = [
     { name: 'Admin User', email: 'admin@cyber.local', password: 'Admin@123', role: 'ADMIN' },
+    { name: 'Security Analyst', email: 'analyst@cyber.local', password: 'Analyst@123', role: 'SECURITY_ANALYST', department: securityOps._id },
     { name: 'Security Manager', email: 'manager@cyber.local', password: 'Manager@123', role: 'MANAGER', department: securityOps._id },
     { name: 'Engineering Manager', email: 'eng.manager@cyber.local', password: 'Manager@123', role: 'MANAGER', department: engineering._id },
     { name: 'HR Manager', email: 'hr.manager@cyber.local', password: 'Manager@123', role: 'MANAGER', department: hr._id },
-    { name: 'Ava Johnson', email: 'ava@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: securityOps._id, isSimulationParticipant: true },
-    { name: 'Noah Smith', email: 'noah@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: engineering._id, isSimulationParticipant: true },
-    { name: 'Mia Brown', email: 'mia@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: hr._id, isSimulationParticipant: true },
-    { name: 'Ethan Wilson', email: 'ethan@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: engineering._id, isSimulationParticipant: true },
-    { name: 'Zoe Patel', email: 'zoe@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: hr._id, isSimulationParticipant: true }
+    { name: 'Ava Johnson', email: 'ava@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: securityOps._id, isSimulationParticipant: true, points: 65, level: 'Defender' },
+    { name: 'Noah Smith', email: 'noah@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: engineering._id, isSimulationParticipant: true, points: 130, level: 'Defender', isSecurityChampion: true },
+    { name: 'Mia Brown', email: 'mia@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: hr._id, isSimulationParticipant: true, points: 165, level: 'Guardian', isSecurityChampion: true },
+    { name: 'Ethan Wilson', email: 'ethan@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: engineering._id, isSimulationParticipant: true, points: 40, level: 'Rookie' },
+    { name: 'Zoe Patel', email: 'zoe@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: hr._id, isSimulationParticipant: true, points: 30, level: 'Rookie' }
   ];
 
   const createdUsers = await Promise.all(
@@ -280,7 +281,12 @@ async function seedSimulations(admin, employees) {
     { name: 'Urgent executive request', template: 'URGENT_CEO_REQUEST' },
     { name: 'Unexpected password reset', template: 'PASSWORD_RESET' },
     { name: 'Routine delivery update', template: 'DELIVERY_NOTIFICATION' },
-    { name: 'Account verification notice', template: 'ACCOUNT_VERIFICATION' }
+    { name: 'Account verification notice', template: 'ACCOUNT_VERIFICATION' },
+    { name: 'Courier postal hold notice', template: 'SMISHING_COURIER' },
+    { name: 'UPI festive reward cashback', template: 'UPI_PAYMENT_FRAUD' },
+    { name: 'IT emergency VPN MFA push', template: 'VISHING_IT_SUPPORT' },
+    { name: 'Cafeteria discount QR scan', template: 'QR_CODE_PHISHING' },
+    { name: 'Executive voice memo transfer', template: 'DEEPFAKE_VOICE_SCAM' }
   ];
 
   for (const [index, scenario] of scenarios.entries()) {

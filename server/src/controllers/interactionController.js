@@ -82,13 +82,17 @@ export const listAvailableSimulations = asyncHandler(async (request, response) =
         id: campaign.id,
         name: campaign.name,
         category: campaign.category,
+        attackType: campaign.attackType || 'EMAIL',
+        difficulty: campaign.difficulty || 'BEGINNER',
         subject: campaign.subject,
         senderDisplayName: campaign.senderDisplayName,
         body: campaign.body,
         sentAt: campaign.sentAt,
         classification,
         isCorrect: classification ? classification === campaign.expectedClassification : null,
-        explanation: classification ? campaign.explanation : null
+        explanation: classification ? campaign.explanation : null,
+        redFlags: classification ? (campaign.redFlags || []) : [],
+        translations: campaign.translations || {}
       };
     })
   });
@@ -121,13 +125,19 @@ export const classifySimulation = asyncHandler(async (request, response) => {
     metadata: { source: 'authorized_in_app_simulation' }
   });
   await updateCampaignStatistics(campaign);
+  const isCorrect = classification === campaign.expectedClassification;
+  if (isCorrect) {
+    await User.findByIdAndUpdate(request.user._id, { $inc: { points: 10 } });
+  }
+
   response.status(201).json({
     success: true,
     result: {
       classification,
-      isCorrect: classification === campaign.expectedClassification,
+      isCorrect,
       expectedClassification: campaign.expectedClassification,
-      explanation: campaign.explanation
+      explanation: campaign.explanation,
+      redFlags: campaign.redFlags || []
     }
   });
 });

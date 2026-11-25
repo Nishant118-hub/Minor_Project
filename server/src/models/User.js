@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true, minlength: 2, maxlength: 100 },
     email: { type: String, required: true, trim: true, lowercase: true, unique: true, index: true },
     password: { type: String, required: true, minlength: 8, select: false },
-    role: { type: String, enum: ['ADMIN', 'MANAGER', 'EMPLOYEE'], default: 'EMPLOYEE', index: true },
+    role: { type: String, enum: ['ADMIN', 'MANAGER', 'EMPLOYEE', 'SECURITY_ANALYST'], default: 'EMPLOYEE', index: true },
     department: { type: mongoose.Schema.Types.ObjectId, ref: 'Department', default: null, index: true },
     designation: { type: String, trim: true, maxlength: 100, default: '' },
     seniority: { type: String, enum: ['JUNIOR', 'MID', 'SENIOR', 'LEAD', 'EXECUTIVE'], default: 'JUNIOR' },
@@ -26,6 +26,13 @@ const userSchema = new mongoose.Schema(
     trainingProgress: { type: [trainingProgressSchema], default: [] },
     badges: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Badge' }],
     points: { type: Number, default: 0, min: 0 },
+    level: { type: String, enum: ['Rookie', 'Defender', 'Guardian'], default: 'Rookie' },
+    streak: {
+      current: { type: Number, default: 0 },
+      highest: { type: Number, default: 0 },
+      lastCompletedDate: { type: String, default: null }
+    },
+    isSecurityChampion: { type: Boolean, default: false },
     lastLoginAt: { type: Date, default: null }
   },
   { timestamps: true }

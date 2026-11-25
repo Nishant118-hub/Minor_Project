@@ -1,7 +1,7 @@
 import AppError from '../utils/AppError.js';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const roles = ['ADMIN', 'MANAGER', 'EMPLOYEE'];
+const roles = ['ADMIN', 'MANAGER', 'EMPLOYEE', 'SECURITY_ANALYST'];
 const seniorityLevels = ['JUNIOR', 'MID', 'SENIOR', 'LEAD', 'EXECUTIVE'];
 
 function optionalText(value, field, maxLength) {

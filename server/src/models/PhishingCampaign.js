@@ -49,11 +49,54 @@ const phishingCampaignSchema = new mongoose.Schema(
     description: { type: String, trim: true, maxlength: 1000, default: '' },
     category: {
       type: String,
-      enum: ['credential_harvest', 'urgent_ceo_request', 'fake_invoice', 'password_reset', 'delivery_notification', 'general_phishing'],
+      enum: [
+        'credential_harvest',
+        'urgent_ceo_request',
+        'fake_invoice',
+        'password_reset',
+        'delivery_notification',
+        'general_phishing',
+        'smishing',
+        'vishing',
+        'qr_code_phishing',
+        'upi_fraud',
+        'deepfake_voice'
+      ],
       required: true,
       index: true
     },
-    template: { type: String, required: true, enum: ['FAKE_INVOICE', 'URGENT_CEO_REQUEST', 'PASSWORD_RESET', 'DELIVERY_NOTIFICATION', 'ACCOUNT_VERIFICATION'] },
+    template: {
+      type: String,
+      required: true,
+      enum: [
+        'FAKE_INVOICE',
+        'URGENT_CEO_REQUEST',
+        'PASSWORD_RESET',
+        'DELIVERY_NOTIFICATION',
+        'ACCOUNT_VERIFICATION',
+        'SMISHING_COURIER',
+        'UPI_PAYMENT_FRAUD',
+        'VISHING_IT_SUPPORT',
+        'QR_CODE_PHISHING',
+        'DEEPFAKE_VOICE_SCAM'
+      ]
+    },
+    attackType: {
+      type: String,
+      enum: ['EMAIL', 'SMS', 'VOICE', 'QR', 'UPI', 'AUDIO'],
+      default: 'EMAIL'
+    },
+    redFlags: [
+      {
+        flag: { type: String, required: true },
+        description: { type: String, required: true },
+        location: { type: String, default: 'body' }
+      }
+    ],
+    translations: {
+      type: mongoose.Schema.Types.Mixed,
+      default: () => ({})
+    },
     subject: { type: String, required: true, trim: true, maxlength: 200 },
     senderDisplayName: { type: String, required: true, trim: true, maxlength: 100 },
     body: { type: String, required: true, maxlength: 10000 },

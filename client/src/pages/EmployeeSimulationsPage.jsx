@@ -6,6 +6,7 @@ export default function EmployeeSimulationsPage() {
   const [loading, setLoading] = useState(true);
   const [submittingId, setSubmittingId] = useState('');
   const [error, setError] = useState('');
+  const [language, setLanguage] = useState('en'); // 'en' | 'hi' | 'pa'
 
   useEffect(() => {
     let active = true;
@@ -32,11 +33,19 @@ export default function EmployeeSimulationsPage() {
     setError('');
     try {
       const { data } = await api.post(`/interactions/${simulationId}/respond`, { classification });
-      setSimulations((current) => current.map((simulation) => (
-        simulation.id === simulationId
-          ? { ...simulation, classification: data.result.classification, isCorrect: data.result.isCorrect, explanation: data.result.explanation }
-          : simulation
-      )));
+      setSimulations((current) =>
+        current.map((simulation) =>
+          simulation.id === simulationId
+            ? {
+                ...simulation,
+                classification: data.result.classification,
+                isCorrect: data.result.isCorrect,
+                explanation: data.result.explanation,
+                redFlags: data.result.redFlags || []
+              }
+            : simulation
+        )
+      );
     } catch (requestError) {
       setError(requestError.response?.data?.message || 'Unable to submit your classification.');
     } finally {
@@ -44,14 +53,69 @@ export default function EmployeeSimulationsPage() {
     }
   }
 
+  function getLocalizedContent(simulation) {
+    if (language === 'hi' && simulation.translations?.hi) {
+      return {
+        subject: simulation.translations.hi.subject || simulation.subject,
+        body: simulation.translations.hi.body || simulation.body,
+        explanation: simulation.translations.hi.explanation || simulation.explanation
+      };
+    }
+    if (language === 'pa' && simulation.translations?.pa) {
+      return {
+        subject: simulation.translations.pa.subject || simulation.subject,
+        body: simulation.translations.pa.body || simulation.body,
+        explanation: simulation.translations.pa.explanation || simulation.explanation
+      };
+    }
+    return {
+      subject: simulation.subject,
+      body: simulation.body,
+      explanation: simulation.explanation
+    };
+  }
+
   if (loading) return <div className="rounded-xl border border-slate-800 bg-slate-900 p-6 text-slate-300">Loading simulations…</div>;
 
   return (
     <div className="space-y-6">
-      <header>
-        <p className="text-sm font-semibold uppercase tracking-widest text-cyan-400">Awareness practice</p>
-        <h1 className="mt-2 text-3xl font-bold">Message simulations</h1>
-        <p className="mt-2 max-w-2xl text-slate-400">Review controlled messages and decide whether each one is suspicious or legitimate. This activity stays inside the training platform.</p>
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-widest text-cyan-400">Interactive Cyber Range</p>
+          <h1 className="mt-1 text-3xl font-bold">Threat Simulation Lab</h1>
+          <p className="mt-1 text-sm max-w-2xl text-slate-400">
+            Inspect simulated phishing emails, SMS texts, UPI collect prompts, QR scans, and voice transcripts. Decide whether each one is suspicious or legitimate.
+          </p>
+        </div>
+
+        {/* Multilingual Selector */}
+        <div className="flex items-center rounded-lg border border-slate-700 bg-slate-900 p-1">
+          <span className="px-2 text-xs text-slate-400">Language:</span>
+          <button
+            onClick={() => setLanguage('en')}
+            className={`rounded px-2.5 py-1 text-xs font-semibold transition-colors ${
+              language === 'en' ? 'bg-cyan-500 text-slate-950' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            English
+          </button>
+          <button
+            onClick={() => setLanguage('hi')}
+            className={`rounded px-2.5 py-1 text-xs font-semibold transition-colors ${
+              language === 'hi' ? 'bg-cyan-500 text-slate-950' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            हिन्दी (Hindi)
+          </button>
+          <button
+            onClick={() => setLanguage('pa')}
+            className={`rounded px-2.5 py-1 text-xs font-semibold transition-colors ${
+              language === 'pa' ? 'bg-cyan-500 text-slate-950' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            ਪੰਜਾਬੀ (Punjabi)
+          </button>
+        </div>
       </header>
 
       {error && <div role="alert" className="rounded-lg border border-rose-800 bg-rose-950/30 p-4 text-rose-200">{error}</div>}
@@ -62,42 +126,172 @@ export default function EmployeeSimulationsPage() {
           <p className="mt-2 text-sm">There are no in-app scenarios assigned to your account right now.</p>
         </div>
       ) : (
-        <div className="space-y-4">
-          {simulations.map((simulation) => (
-            <article key={simulation.id} className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
-              <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800 px-5 py-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">{simulation.category.replaceAll('_', ' ')}</p>
-                  <h2 className="mt-1 text-lg font-semibold">{simulation.name}</h2>
-                </div>
-                <time className="text-xs text-slate-400" dateTime={simulation.sentAt || undefined}>
-                  {simulation.sentAt ? new Date(simulation.sentAt).toLocaleString() : 'Assigned simulation'}
-                </time>
-              </div>
-              <div className="space-y-4 p-5">
-                <div className="rounded-lg border border-slate-700 bg-slate-950/70 p-4">
-                  <p className="text-xs text-slate-400">FROM</p>
-                  <p className="mt-1 font-medium">{simulation.senderDisplayName}</p>
-                  <p className="mt-4 text-xs text-slate-400">SUBJECT</p>
-                  <p className="mt-1 font-medium">{simulation.subject}</p>
-                  <p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-slate-300">{simulation.body}</p>
+        <div className="space-y-6">
+          {simulations.map((simulation) => {
+            const localized = getLocalizedContent(simulation);
+            const attackType = simulation.attackType || 'EMAIL';
+            const isCompleted = Boolean(simulation.classification);
+
+            return (
+              <article key={simulation.id} className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900 shadow-lg">
+                {/* Header Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 bg-slate-950/40 px-5 py-3.5">
+                  <div className="flex items-center gap-2.5">
+                    <span className="rounded bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-0.5 text-xs font-bold text-cyan-300">
+                      {attackType} ATTACK
+                    </span>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                      {simulation.category?.replaceAll('_', ' ')}
+                    </span>
+                    <span className="text-xs text-slate-500">·</span>
+                    <span className="text-xs text-slate-400">Difficulty: {simulation.difficulty || 'BEGINNER'}</span>
+                  </div>
+                  <time className="text-xs text-slate-400" dateTime={simulation.sentAt || undefined}>
+                    {simulation.sentAt ? new Date(simulation.sentAt).toLocaleString() : 'Assigned simulation'}
+                  </time>
                 </div>
 
-                {simulation.classification ? (
-                  <div className={`rounded-lg border p-4 ${simulation.isCorrect ? 'border-emerald-500/30 bg-emerald-500/10' : 'border-amber-500/30 bg-amber-500/10'}`}>
-                    <p className="font-semibold">{simulation.isCorrect ? 'Correct classification' : 'Review this one'}</p>
-                    <p className="mt-1 text-sm text-slate-200">You marked this message {simulation.classification.toLowerCase()}. {simulation.explanation}</p>
-                  </div>
-                ) : (
-                  <div className="flex flex-wrap items-center gap-3">
-                    <p className="mr-auto text-sm text-slate-300">How would you classify this message?</p>
-                    <button disabled={submittingId === simulation.id} onClick={() => classify(simulation.id, 'LEGITIMATE')} className="rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-100 hover:border-emerald-400 hover:text-emerald-300 disabled:opacity-50">Legitimate</button>
-                    <button disabled={submittingId === simulation.id} onClick={() => classify(simulation.id, 'SUSPICIOUS')} className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-400 disabled:opacity-50">Suspicious</button>
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
+                <div className="p-5 space-y-4">
+                  {/* Realistic Mockup Container */}
+                  {attackType === 'SMS' ? (
+                    // Smartphone SMS Mockup
+                    <div className="mx-auto max-w-md rounded-2xl border border-slate-700 bg-slate-950 p-4 shadow-xl">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 text-xs text-slate-400">
+                        <span>💬 SMS Message</span>
+                        <span className="font-semibold text-cyan-400">{simulation.senderDisplayName}</span>
+                      </div>
+                      <div className="mt-4 flex flex-col gap-2">
+                        <div className="max-w-[88%] rounded-2xl rounded-tl-sm bg-slate-800 p-3.5 text-sm text-slate-100 shadow">
+                          <p className="whitespace-pre-wrap leading-relaxed">{localized.body}</p>
+                        </div>
+                        <span className="text-[10px] text-slate-500 pl-1">Delivered via SMS</span>
+                      </div>
+                    </div>
+                  ) : attackType === 'UPI' ? (
+                    // UPI Collect Modal Mockup
+                    <div className="mx-auto max-w-md rounded-2xl border border-violet-500/30 bg-slate-950 p-5 shadow-2xl space-y-3">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <span className="text-xs font-bold text-violet-400 uppercase tracking-wider">⚡ UPI Payment Prompt</span>
+                        <span className="text-xs text-slate-400">BHIM / PhonePe / GPay</span>
+                      </div>
+                      <div className="rounded-xl bg-violet-950/20 border border-violet-500/20 p-3.5 text-center">
+                        <p className="text-xs text-slate-400">Incoming Reward Claim</p>
+                        <p className="text-2xl font-bold text-emerald-400 mt-1">₹ 4,850.00</p>
+                      </div>
+                      <div className="text-xs text-slate-300 whitespace-pre-wrap leading-relaxed">
+                        {localized.body}
+                      </div>
+                    </div>
+                  ) : attackType === 'VOICE' ? (
+                    // Voice Call Transcript Mockup
+                    <div className="rounded-xl border border-slate-700 bg-slate-950 p-4 space-y-3">
+                      <div className="flex items-center gap-3 border-b border-slate-800 pb-3">
+                        <div className="grid h-9 w-9 place-items-center rounded-full bg-emerald-500/20 text-emerald-400 font-bold">📞</div>
+                        <div>
+                          <p className="text-xs text-slate-400 font-medium">Inbound Voice Call Audio Record</p>
+                          <p className="text-sm font-bold text-slate-200">{simulation.senderDisplayName}</p>
+                        </div>
+                      </div>
+                      <div className="rounded-lg bg-slate-900/90 border border-slate-800 p-3.5 text-sm font-mono text-slate-200 whitespace-pre-wrap leading-relaxed">
+                        {localized.body}
+                      </div>
+                    </div>
+                  ) : attackType === 'QR' ? (
+                    // QR Code Scanner Mockup
+                    <div className="rounded-xl border border-slate-700 bg-slate-950 p-4 space-y-3">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-2 text-xs text-slate-400">
+                        <span>📷 Optical QR Scanner</span>
+                        <span>{simulation.senderDisplayName}</span>
+                      </div>
+                      <div className="text-sm text-slate-200 whitespace-pre-wrap leading-relaxed font-mono bg-slate-900/80 p-4 rounded-lg border border-slate-800">
+                        {localized.body}
+                      </div>
+                    </div>
+                  ) : (
+                    // Default: Realistic Email Client Mockup
+                    <div className="rounded-xl border border-slate-700 bg-slate-950 overflow-hidden shadow-inner">
+                      <div className="border-b border-slate-800 bg-slate-900/60 p-4 space-y-2">
+                        <div className="flex items-baseline justify-between text-xs">
+                          <span className="font-semibold text-slate-400">FROM:</span>
+                          <span className="font-mono text-slate-200">{simulation.senderDisplayName}</span>
+                        </div>
+                        <div className="flex items-baseline justify-between text-xs">
+                          <span className="font-semibold text-slate-400">SUBJECT:</span>
+                          <span className="font-semibold text-slate-100">{localized.subject}</span>
+                        </div>
+                      </div>
+                      <div className="p-5 text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">
+                        {localized.body}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Red-Flag Highlighting & Results Screen */}
+                  {isCompleted ? (
+                    <div className={`rounded-xl border p-5 space-y-4 ${
+                      simulation.isCorrect ? 'border-emerald-500/30 bg-emerald-500/10' : 'border-amber-500/30 bg-amber-500/10'
+                    }`}>
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <p className={`text-base font-bold ${simulation.isCorrect ? 'text-emerald-400' : 'text-amber-400'}`}>
+                            {simulation.isCorrect ? '✓ Correct Classification!' : '⚠ Review this scenario'}
+                          </p>
+                          <p className="text-xs text-slate-300 mt-0.5">
+                            You marked this message <strong>{simulation.classification}</strong>.
+                          </p>
+                        </div>
+                        {simulation.isCorrect && (
+                          <span className="rounded-full bg-emerald-950 border border-emerald-500/40 px-3 py-1 text-xs font-bold text-emerald-300">
+                            +10 Points Earned
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-sm text-slate-200 leading-relaxed">{localized.explanation}</p>
+
+                      {/* Visual Red-Flag Highlighting */}
+                      {simulation.redFlags && simulation.redFlags.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-slate-800/80">
+                          <p className="text-xs font-bold uppercase tracking-wider text-rose-300 mb-2">
+                            🚩 Red Flags Identified in this Message:
+                          </p>
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            {simulation.redFlags.map((flag, idx) => (
+                              <div key={idx} className="rounded-lg border border-rose-500/30 bg-slate-900/90 p-2.5">
+                                <p className="text-xs font-bold text-rose-300">{flag.flag}</p>
+                                <p className="text-xs text-slate-300 mt-1">{flag.description}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    /* Classification Action Controls */
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-3">
+                      <p className="text-sm text-slate-300">How would you classify this message?</p>
+                      <div className="flex items-center gap-3">
+                        <button
+                          disabled={submittingId === simulation.id}
+                          onClick={() => classify(simulation.id, 'LEGITIMATE')}
+                          className="rounded-lg border border-slate-600 px-5 py-2 text-sm font-semibold text-slate-100 hover:border-emerald-400 hover:text-emerald-300 disabled:opacity-50 transition-colors"
+                        >
+                          Mark as Legitimate
+                        </button>
+                        <button
+                          disabled={submittingId === simulation.id}
+                          onClick={() => classify(simulation.id, 'SUSPICIOUS')}
+                          className="rounded-lg bg-cyan-500 px-5 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-400 disabled:opacity-50 transition-colors shadow-lg shadow-cyan-500/20"
+                        >
+                          Mark as Suspicious
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })}
         </div>
       )}
     </div>

@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 
 const destinations = {
   ADMIN: '/admin/dashboard',
+  SECURITY_ANALYST: '/admin/dashboard',
   MANAGER: '/manager/dashboard',
   EMPLOYEE: '/employee/dashboard'
 };

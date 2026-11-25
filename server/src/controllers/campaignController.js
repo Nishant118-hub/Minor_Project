@@ -25,12 +25,15 @@ function applyTemplate(data) {
   return {
     ...data,
     category: template.category,
+    attackType: template.attackType || 'EMAIL',
     subject: template.subject,
     senderDisplayName: template.senderDisplayName,
     body: template.body,
     expectedClassification: template.expectedClassification,
     explanation: template.explanation,
     difficulty: data.difficulty || template.difficulty,
+    redFlags: template.redFlags || [],
+    translations: template.translations || {},
     simulationMode: true,
     simulationUrl: ''
   };

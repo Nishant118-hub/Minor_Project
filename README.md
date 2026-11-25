@@ -204,6 +204,7 @@ Run the seed script before logging in. These development-only accounts are creat
 | Role | Email | Password |
 | --- | --- | --- |
 | Admin | `admin@cyber.local` | `Admin@123` |
+| Security Analyst | `analyst@cyber.local` | `Analyst@123` |
 | Manager | `manager@cyber.local` | `Manager@123` |
 | Manager | `eng.manager@cyber.local` | `Manager@123` |
 | Manager | `hr.manager@cyber.local` | `Manager@123` |

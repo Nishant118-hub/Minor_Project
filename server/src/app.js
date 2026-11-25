@@ -18,6 +18,8 @@ import riskRoutes from './routes/riskRoutes.js';
 import simulationRoutes from './routes/simulationRoutes.js';
 import trainingRoutes from './routes/trainingRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import incidentRoutes from './routes/incidentRoutes.js';
+import dailyChallengeRoutes from './routes/dailyChallengeRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFound } from './middleware/notFound.js';
 
@@ -51,6 +53,8 @@ app.use('/api/risk', riskRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/incidents', incidentRoutes);
+app.use('/api/daily-challenge', dailyChallengeRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
