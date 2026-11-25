@@ -27,12 +27,12 @@ const linksByRole = {
   ],
   EMPLOYEE: [
     ['Dashboard', '/employee/dashboard'],
-    ['Daily Challenge ⚡', '/employee/daily-challenge'],
+    ['Daily Challenge', '/employee/daily-challenge'],
     ['Simulations', '/employee/simulations'],
     ['Training', '/employee/training'],
-    ['Message Analyzer 🔍', '/employee/analyzer'],
-    ['Report Incident 🚨', '/employee/incidents'],
-    ['Leaderboard 🏆', '/employee/leaderboard'],
+    ['Message Analyzer', '/employee/analyzer'],
+    ['Report Incident', '/employee/incidents'],
+    ['Leaderboard', '/employee/leaderboard'],
     ['Recommendations', '/employee/recommendations'],
     ['Badges & Rank', '/employee/badges'],
     ['Profile', '/employee/profile']
@@ -48,7 +48,7 @@ export default function AppLayout() {
       <aside className="border-b border-slate-800 bg-slate-900 p-4 md:sticky md:top-0 md:h-screen md:border-b-0 md:border-r md:p-5 flex flex-col justify-between">
         <div>
           <div className="mb-6 flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 font-black text-slate-950 shadow-lg shadow-cyan-500/20">CA</div>
+            <div className="grid h-10 w-10 place-items-center rounded-lg bg-gradient-to-br from-cyan-400 to-emerald-500 font-black text-slate-950 shadow-lg shadow-cyan-500/20">CA</div>
             <div>
               <p className="font-bold text-sm tracking-wide">Cyber Awareness</p>
               <p className="text-xs text-slate-400">Enterprise Platform</p>
@@ -79,7 +79,7 @@ export default function AppLayout() {
               <span className="font-semibold text-cyan-400">{user.level || 'Rookie'}</span>
             </div>
             <div className="mt-2 flex items-center justify-between">
-              <span className="text-xs text-amber-400 font-medium">🔥 {user.streak?.current || 0} Day Streak</span>
+              <span className="text-xs text-amber-400 font-medium">{user.streak?.current || 0} Day Streak</span>
               <span className="text-xs text-emerald-400 font-bold">{user.points || 0} pts</span>
             </div>
             {user.isSecurityChampion && (
@@ -110,7 +110,7 @@ export default function AppLayout() {
           <div className="flex items-center gap-3">
             {user.role === 'EMPLOYEE' && (
               <NavLink to="/employee/daily-challenge" className="hidden sm:flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-300 hover:bg-amber-500/20 transition-colors">
-                <span>🔥</span> {user.streak?.current || 0} Day Streak
+                {user.streak?.current || 0} Day Streak
               </NavLink>
             )}
             <button onClick={signOut} className="shrink-0 rounded-lg border border-slate-700 px-3 py-1.5 text-xs sm:text-sm text-slate-200 transition-colors hover:bg-slate-800">

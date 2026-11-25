@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Bar, BarChart, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { getAdminDashboard } from '../services/dashboardService';
 
-const riskColors = { LOW: '#66876a', MEDIUM: '#ab844f', HIGH: '#a65e55' };
-const chartText = '#81715e';
+const riskColors = { LOW: '#00ff41', MEDIUM: '#a3d8a3', HIGH: '#ff5b5b' };
+const chartText = '#78ae78';
 
 function MetricCard({ label, value, accent = 'text-cyan-400' }) {
   return <article className="rounded-xl border border-slate-800 bg-slate-900 p-5"><p className="text-sm text-slate-400">{label}</p><p className={`mt-2 text-3xl font-bold ${accent}`}>{value}</p></article>;
@@ -37,9 +37,9 @@ export default function AdminDashboardPage() {
       </section>
       <section className="grid gap-6 xl:grid-cols-2">
         <ChartCard title="Risk distribution"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={charts.riskDistribution} dataKey="value" nameKey="name" outerRadius={95} label>{charts.riskDistribution.map((entry) => <Cell key={entry.name} fill={riskColors[entry.name]} />)}</Pie><Tooltip /><Legend /></PieChart></ResponsiveContainer></ChartCard>
-        <ChartCard title="Department risk comparison"><ResponsiveContainer width="100%" height="100%"><BarChart data={charts.departmentComparison}><XAxis dataKey="department" tick={{ fill: chartText, fontSize: 12 }} /><YAxis tick={{ fill: chartText }} /><Tooltip /><Bar dataKey="averageRisk" name="Average risk" fill="#617d65" radius={[4, 4, 0, 0]} /></BarChart></ResponsiveContainer></ChartCard>
-        <ChartCard title="Campaign click and report rates"><ResponsiveContainer width="100%" height="100%"><BarChart data={charts.campaignPerformance}><XAxis dataKey="campaign" hide /><YAxis tick={{ fill: chartText }} /><Tooltip /><Legend /><Bar dataKey="clickRate" name="Click rate %" fill="#a65e55" /><Bar dataKey="reportRate" name="Report rate %" fill="#66876a" /></BarChart></ResponsiveContainer></ChartCard>
-        <ChartCard title="Average risk score trend"><ResponsiveContainer width="100%" height="100%"><LineChart data={charts.riskTrend}><XAxis dataKey="date" tick={{ fill: chartText, fontSize: 12 }} /><YAxis domain={[0, 100]} tick={{ fill: chartText }} /><Tooltip /><Line type="monotone" dataKey="averageScore" name="Average score" stroke="#526e57" strokeWidth={3} dot={false} /></LineChart></ResponsiveContainer></ChartCard>
+        <ChartCard title="Department risk comparison"><ResponsiveContainer width="100%" height="100%"><BarChart data={charts.departmentComparison}><XAxis dataKey="department" tick={{ fill: chartText, fontSize: 12 }} /><YAxis tick={{ fill: chartText }} /><Tooltip /><Bar dataKey="averageRisk" name="Average risk" fill="#008f11" radius={[4, 4, 0, 0]} /></BarChart></ResponsiveContainer></ChartCard>
+        <ChartCard title="Campaign click and report rates"><ResponsiveContainer width="100%" height="100%"><BarChart data={charts.campaignPerformance}><XAxis dataKey="campaign" hide /><YAxis tick={{ fill: chartText }} /><Tooltip /><Legend /><Bar dataKey="clickRate" name="Click rate %" fill="#a3d8a3" /><Bar dataKey="reportRate" name="Report rate %" fill="#00ff41" /></BarChart></ResponsiveContainer></ChartCard>
+        <ChartCard title="Average risk score trend"><ResponsiveContainer width="100%" height="100%"><LineChart data={charts.riskTrend}><XAxis dataKey="date" tick={{ fill: chartText, fontSize: 12 }} /><YAxis domain={[0, 100]} tick={{ fill: chartText }} /><Tooltip /><Line type="monotone" dataKey="averageScore" name="Average score" stroke="#00ff41" strokeWidth={3} dot={false} /></LineChart></ResponsiveContainer></ChartCard>
       </section>
       <section className="grid gap-4 sm:grid-cols-3"><MetricCard label="Low risk employees" value={metrics.lowRiskEmployees} accent="text-emerald-400" /><MetricCard label="Average click rate" value={`${metrics.averageClickRate}%`} accent="text-rose-400" /><MetricCard label="Average report rate" value={`${metrics.averageReportRate}%`} accent="text-emerald-400" /></section>
     </div>

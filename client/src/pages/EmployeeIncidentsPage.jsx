@@ -86,7 +86,7 @@ export default function EmployeeIncidentsPage() {
             activeTab === 'report' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          🚨 Report New Incident
+          Report New Incident
         </button>
         <button
           onClick={() => setActiveTab('checklist')}
@@ -94,7 +94,7 @@ export default function EmployeeIncidentsPage() {
             activeTab === 'checklist' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          📋 Immediate Response Checklist
+          Immediate Response Checklist
         </button>
         <button
           onClick={() => setActiveTab('history')}
@@ -102,7 +102,7 @@ export default function EmployeeIncidentsPage() {
             activeTab === 'history' ? 'border-cyan-400 text-cyan-400' : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          📑 My Reported Incidents ({incidents.length})
+          My Reported Incidents ({incidents.length})
         </button>
       </div>
 
@@ -214,7 +214,7 @@ export default function EmployeeIncidentsPage() {
                 disabled={submitting}
                 className="rounded-lg bg-rose-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-rose-600 disabled:opacity-50 transition-colors flex items-center gap-2 shadow-lg shadow-rose-500/20"
               >
-                {submitting ? 'Submitting to SOC…' : '🚨 Submit Security Report'}
+                {submitting ? 'Submitting to SOC…' : 'Submit Security Report'}
               </button>
             </div>
           </form>

@@ -197,6 +197,19 @@ python -m unittest discover -s tests -p "test_*.py" -v
 
 The tests cover health, risk-tier boundaries, explainable weak areas, simulation-classification scoring and recommendations, CSV label validation, and isolated synthetic/real-data model training using temporary files.
 
+## Deploy on Render
+
+The root `render.yaml` defines the frontend, Express API, and AI service. To deploy:
+
+1. Push the project to GitHub and create a new Blueprint in the Render Dashboard using this repository and its `main` branch.
+2. Create a MongoDB Atlas database. Enter its connection string as `MONGO_URI` when Render prompts for the Blueprint variable. Keep Atlas network access restricted to the required Render egress IP ranges; do not commit the connection string.
+3. Deploy the Blueprint. It generates `JWT_SECRET` and `ADMIN_REGISTRATION_CODE`. View the latter in the API service's environment settings when creating the first admin account.
+4. If Render reports a hostname conflict for one of the service names, update the affected service name and the matching API/frontend URL values in `render.yaml`, then sync the Blueprint.
+
+Email notices are not configured by default. AI predictions use the service's defensive fallback until you provide an approved, human-labeled dataset and train a model locally. Do not seed the public deployment with development demo accounts.
+
+Render's free web services can sleep when idle and may take a short time to respond on the first request. For current platform limits, refer to Render's [free service documentation](https://render.com/docs/free).
+
 ## Demo Accounts
 
 Run the seed script before logging in. These development-only accounts are created by `server/src/seed/index.js`:

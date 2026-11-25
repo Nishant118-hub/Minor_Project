@@ -94,7 +94,7 @@ export default function EmployeeDailyChallengePage() {
         <div className="flex items-center gap-3">
           <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-2.5 text-center">
             <p className="text-xs text-amber-300 font-semibold uppercase">Daily Streak</p>
-            <p className="text-2xl font-black text-amber-400">🔥 {data.streak?.current || 0} <span className="text-xs font-normal text-slate-400">days</span></p>
+            <p className="text-2xl font-black text-amber-400">{data.streak?.current || 0} <span className="text-xs font-normal text-slate-400">days</span></p>
           </div>
           <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-2.5 text-center">
             <p className="text-xs text-slate-400 font-semibold uppercase">Best Streak</p>
@@ -180,7 +180,7 @@ export default function EmployeeDailyChallengePage() {
               }`}>
                 <div className="flex items-center justify-between">
                   <h3 className={`text-base font-bold ${result.isCorrect ? 'text-emerald-400' : 'text-amber-400'}`}>
-                    {result.isCorrect ? '🎉 Correct Classification!' : '💡 Learning Opportunity'}
+                    {result.isCorrect ? 'Correct Classification!' : 'Learning Opportunity'}
                   </h3>
                   <span className="rounded bg-slate-900/80 px-2.5 py-1 text-xs font-bold text-cyan-300">
                     +{result.pointsEarned || 15} points

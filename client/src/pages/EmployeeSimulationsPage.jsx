@@ -6,6 +6,7 @@ export default function EmployeeSimulationsPage() {
   const [loading, setLoading] = useState(true);
   const [submittingId, setSubmittingId] = useState('');
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
   const [language, setLanguage] = useState('en'); // 'en' | 'hi' | 'pa'
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function EmployeeSimulationsPage() {
   async function classify(simulationId, classification) {
     setSubmittingId(simulationId);
     setError('');
+    setNotice('');
     try {
       const { data } = await api.post(`/interactions/${simulationId}/respond`, { classification });
       setSimulations((current) =>
@@ -48,6 +50,25 @@ export default function EmployeeSimulationsPage() {
       );
     } catch (requestError) {
       setError(requestError.response?.data?.message || 'Unable to submit your classification.');
+    } finally {
+      setSubmittingId('');
+    }
+  }
+
+  async function reportSimulation(simulationId) {
+    setSubmittingId(simulationId);
+    setError('');
+    setNotice('');
+    try {
+      await api.post('/interactions', { campaignId: simulationId, eventType: 'REPORTED' });
+      setSimulations((current) =>
+        current.map((simulation) => (
+          simulation.id === simulationId ? { ...simulation, reported: true } : simulation
+        ))
+      );
+      setNotice('Simulation report recorded for training review. No message contents or credentials were submitted.');
+    } catch (requestError) {
+      setError(requestError.response?.data?.message || 'Unable to report this simulation.');
     } finally {
       setSubmittingId('');
     }
@@ -119,6 +140,7 @@ export default function EmployeeSimulationsPage() {
       </header>
 
       {error && <div role="alert" className="rounded-lg border border-rose-800 bg-rose-950/30 p-4 text-rose-200">{error}</div>}
+      {notice && <div role="status" className="rounded-lg border border-emerald-800 bg-emerald-950/30 p-4 text-emerald-200">{notice}</div>}
 
       {simulations.length === 0 ? (
         <div className="rounded-xl border border-slate-800 bg-slate-900 p-8 text-slate-300">
@@ -157,7 +179,7 @@ export default function EmployeeSimulationsPage() {
                     // Smartphone SMS Mockup
                     <div className="mx-auto max-w-md rounded-2xl border border-slate-700 bg-slate-950 p-4 shadow-xl">
                       <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 text-xs text-slate-400">
-                        <span>💬 SMS Message</span>
+                        <span>SMS Message</span>
                         <span className="font-semibold text-cyan-400">{simulation.senderDisplayName}</span>
                       </div>
                       <div className="mt-4 flex flex-col gap-2">
@@ -171,7 +193,7 @@ export default function EmployeeSimulationsPage() {
                     // UPI Collect Modal Mockup
                     <div className="mx-auto max-w-md rounded-2xl border border-violet-500/30 bg-slate-950 p-5 shadow-2xl space-y-3">
                       <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                        <span className="text-xs font-bold text-violet-400 uppercase tracking-wider">⚡ UPI Payment Prompt</span>
+                        <span className="text-xs font-bold text-violet-400 uppercase tracking-wider">UPI Payment Prompt</span>
                         <span className="text-xs text-slate-400">BHIM / PhonePe / GPay</span>
                       </div>
                       <div className="rounded-xl bg-violet-950/20 border border-violet-500/20 p-3.5 text-center">
@@ -186,7 +208,7 @@ export default function EmployeeSimulationsPage() {
                     // Voice Call Transcript Mockup
                     <div className="rounded-xl border border-slate-700 bg-slate-950 p-4 space-y-3">
                       <div className="flex items-center gap-3 border-b border-slate-800 pb-3">
-                        <div className="grid h-9 w-9 place-items-center rounded-full bg-emerald-500/20 text-emerald-400 font-bold">📞</div>
+                        <div className="grid h-9 w-9 place-items-center rounded-full bg-emerald-500/20 text-emerald-400 font-bold" aria-hidden="true">TEL</div>
                         <div>
                           <p className="text-xs text-slate-400 font-medium">Inbound Voice Call Audio Record</p>
                           <p className="text-sm font-bold text-slate-200">{simulation.senderDisplayName}</p>
@@ -200,7 +222,7 @@ export default function EmployeeSimulationsPage() {
                     // QR Code Scanner Mockup
                     <div className="rounded-xl border border-slate-700 bg-slate-950 p-4 space-y-3">
                       <div className="flex items-center justify-between border-b border-slate-800 pb-2 text-xs text-slate-400">
-                        <span>📷 Optical QR Scanner</span>
+                        <span>Optical QR Scanner</span>
                         <span>{simulation.senderDisplayName}</span>
                       </div>
                       <div className="text-sm text-slate-200 whitespace-pre-wrap leading-relaxed font-mono bg-slate-900/80 p-4 rounded-lg border border-slate-800">
@@ -234,7 +256,7 @@ export default function EmployeeSimulationsPage() {
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div>
                           <p className={`text-base font-bold ${simulation.isCorrect ? 'text-emerald-400' : 'text-amber-400'}`}>
-                            {simulation.isCorrect ? '✓ Correct Classification!' : '⚠ Review this scenario'}
+                            {simulation.isCorrect ? 'Correct Classification!' : 'Review this scenario'}
                           </p>
                           <p className="text-xs text-slate-300 mt-0.5">
                             You marked this message <strong>{simulation.classification}</strong>.
@@ -253,7 +275,7 @@ export default function EmployeeSimulationsPage() {
                       {simulation.redFlags && simulation.redFlags.length > 0 && (
                         <div className="mt-3 pt-3 border-t border-slate-800/80">
                           <p className="text-xs font-bold uppercase tracking-wider text-rose-300 mb-2">
-                            🚩 Red Flags Identified in this Message:
+                            Red Flags Identified in this Message:
                           </p>
                           <div className="grid gap-2 sm:grid-cols-2">
                             {simulation.redFlags.map((flag, idx) => (
@@ -288,6 +310,20 @@ export default function EmployeeSimulationsPage() {
                       </div>
                     </div>
                   )}
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-3">
+                    <p className="text-sm text-slate-400">
+                      {simulation.reported ? 'Reported for training review.' : 'Think this scenario should be reviewed?'}
+                    </p>
+                    {!simulation.reported && (
+                      <button
+                        disabled={submittingId === simulation.id}
+                        onClick={() => reportSimulation(simulation.id)}
+                        className="rounded-lg border border-emerald-500/50 px-4 py-2 text-sm font-semibold text-emerald-300 hover:bg-emerald-500/10 disabled:opacity-50 transition-colors"
+                      >
+                        {submittingId === simulation.id ? 'Reporting…' : 'Report this simulation'}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </article>
             );

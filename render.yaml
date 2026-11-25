@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: minor-project-nishant118-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 1d
+      - key: ADMIN_REGISTRATION_CODE
+        generateValue: true
+      - key: CLIENT_URL
+        value: https://minor-project-nishant118-client.onrender.com
+      - key: APP_BASE_URL
+        value: https://minor-project-nishant118-client.onrender.com
+      - key: AI_SERVICE_URL
+        value: https://minor-project-nishant118-ai.onrender.com
+      - key: AI_USE_ML_MODEL
+        value: true
+
+  - type: web
+    name: minor-project-nishant118-ai
+    runtime: python
+    plan: free
+    rootDir: ai-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+
+  - type: web
+    name: minor-project-nishant118-client
+    runtime: static
+    rootDir: client
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://minor-project-nishant118-api.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

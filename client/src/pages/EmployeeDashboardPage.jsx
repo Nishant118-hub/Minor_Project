@@ -48,13 +48,13 @@ export default function EmployeeDashboardPage() {
             to="/employee/daily-challenge"
             className="rounded-lg bg-amber-500/10 border border-amber-500/30 px-3.5 py-2 text-xs font-bold text-amber-300 hover:bg-amber-500/20 transition-colors flex items-center gap-1.5"
           >
-            ⚡ Daily 60s Challenge
+            Daily 60s Challenge
           </NavLink>
           <NavLink
             to="/employee/analyzer"
             className="rounded-lg bg-cyan-500 px-3.5 py-2 text-xs font-bold text-slate-950 hover:bg-cyan-400 transition-colors flex items-center gap-1.5"
           >
-            🔍 Message Analyzer
+            Message Analyzer
           </NavLink>
         </div>
       </section>
@@ -214,7 +214,7 @@ export default function EmployeeDashboardPage() {
                     branchingChoice.outcome === 'SUCCESS' ? 'text-emerald-400' :
                     branchingChoice.outcome === 'PARTIAL' ? 'text-amber-400' : 'text-rose-400'
                   }`}>
-                    {branchingChoice.outcome === 'SUCCESS' ? '🛡️ Safe Decision!' : '⚠️ Risk Realized'}
+                    {branchingChoice.outcome === 'SUCCESS' ? 'Safe Decision!' : 'Risk Realized'}
                   </span>
                   <span className="text-xs font-bold text-cyan-300">+{branchingChoice.pointsEarned} pts</span>
                 </div>

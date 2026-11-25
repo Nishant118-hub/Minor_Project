@@ -70,14 +70,22 @@ export const listAvailableSimulations = asyncHandler(async (request, response) =
   const responses = await InteractionLog.find({
     campaignId: { $in: campaignIds },
     userId: request.user._id,
-    eventType: 'CLASSIFIED'
-  }).select('campaignId classification');
-  const responseByCampaign = new Map(responses.map((item) => [String(item.campaignId), item.classification]));
+    eventType: { $in: ['CLASSIFIED', 'REPORTED'] }
+  }).select('campaignId eventType classification');
+  const responseByCampaign = new Map();
+  for (const item of responses) {
+    const campaignKey = String(item.campaignId);
+    const current = responseByCampaign.get(campaignKey) || { classification: null, reported: false };
+    if (item.eventType === 'CLASSIFIED') current.classification = item.classification;
+    if (item.eventType === 'REPORTED') current.reported = true;
+    responseByCampaign.set(campaignKey, current);
+  }
 
   response.json({
     success: true,
     simulations: campaigns.map((campaign) => {
-      const classification = responseByCampaign.get(String(campaign._id)) || null;
+      const responseState = responseByCampaign.get(String(campaign._id)) || { classification: null, reported: false };
+      const { classification } = responseState;
       return {
         id: campaign.id,
         name: campaign.name,
@@ -89,6 +97,7 @@ export const listAvailableSimulations = asyncHandler(async (request, response) =
         body: campaign.body,
         sentAt: campaign.sentAt,
         classification,
+        reported: responseState.reported,
         isCorrect: classification ? classification === campaign.expectedClassification : null,
         explanation: classification ? campaign.explanation : null,
         redFlags: classification ? (campaign.redFlags || []) : [],

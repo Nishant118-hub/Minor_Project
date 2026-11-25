@@ -4,22 +4,22 @@
 
 html {
   min-width: 320px;
-  background: #f4efe6;
+  background: #0a0f0a;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  color: #352a22;
-  background: #f4efe6;
+  color: #c9f7c9;
+  background: #0a0f0a;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  color: #fffdf9;
-  background: #526e57;
+  color: #0a0f0a;
+  background: #00ff41;
 }
 
 button,
@@ -32,10 +32,10 @@ textarea {
 
 input[type='checkbox'],
 input[type='radio'] {
-  accent-color: #617d65;
+  accent-color: #00ff41;
 }
 
 :focus-visible {
-  outline: 2px solid #526e57;
+  outline: 2px solid #00ff41;
   outline-offset: 2px;
 }

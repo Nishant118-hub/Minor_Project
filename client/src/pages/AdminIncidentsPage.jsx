@@ -123,7 +123,7 @@ export default function AdminIncidentsPage() {
 
                 {inc.hasClickedOrInteracted && (
                   <div className="mt-2 text-[11px] font-semibold text-rose-400">
-                    ⚠️ Employee reported interacting or clicking link/PIN before reporting.
+                    Employee reported interacting or clicking link/PIN before reporting.
                   </div>
                 )}
               </div>
@@ -197,7 +197,6 @@ export default function AdminIncidentsPage() {
             </form>
           ) : (
             <div className="h-full flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-800 bg-slate-900/40 p-8 text-center text-slate-400">
-              <div className="text-4xl mb-3">🛡️</div>
               <p className="font-medium text-slate-300">Select an incident to review</p>
               <p className="mt-1 text-xs max-w-xs text-slate-500">
                 Click any ticket on the left to inspect evidence, update ticket status, and provide feedback to the reporter.

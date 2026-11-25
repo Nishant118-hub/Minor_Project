@@ -73,7 +73,7 @@ export default function AdminReportsPage() {
       {/* Admin Alerts */}
       {intel?.alerts && intel.alerts.length > 0 && (
         <section className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 space-y-2">
-          <p className="text-xs font-bold uppercase tracking-wider text-amber-300">⚠️ Active Security Alerts ({intel.alerts.length})</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-amber-300">Active Security Alerts ({intel.alerts.length})</p>
           <div className="grid gap-2 sm:grid-cols-2">
             {intel.alerts.map((alert, idx) => (
               <div key={idx} className="rounded-lg bg-slate-900/90 border border-slate-800 p-3 text-xs text-slate-200 flex items-start gap-2">

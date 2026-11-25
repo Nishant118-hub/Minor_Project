@@ -1,32 +1,35 @@
+import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleLanding from './components/RoleLanding';
 import AppLayout from './layouts/AppLayout';
-import AdminCampaignsPage from './pages/AdminCampaignsPage';
-import AdminDashboardPage from './pages/AdminDashboardPage';
-import AdminDepartmentsPage from './pages/AdminDepartmentsPage';
-import AdminLearningPage from './pages/AdminLearningPage';
-import AdminReportsPage from './pages/AdminReportsPage';
-import AdminUsersPage from './pages/AdminUsersPage';
-import AdminIncidentsPage from './pages/AdminIncidentsPage';
-import DepartmentLeaderboardPage from './pages/DepartmentLeaderboardPage';
-import EmployeeAnalyzerPage from './pages/EmployeeAnalyzerPage';
-import EmployeeBadgesPage from './pages/EmployeeBadgesPage';
-import EmployeeDailyChallengePage from './pages/EmployeeDailyChallengePage';
-import EmployeeDashboardPage from './pages/EmployeeDashboardPage';
-import EmployeeIncidentsPage from './pages/EmployeeIncidentsPage';
-import EmployeeProfilePage from './pages/EmployeeProfilePage';
-import EmployeeSimulationsPage from './pages/EmployeeSimulationsPage';
-import LoginPage from './pages/LoginPage';
-import ManagerDashboardPage from './pages/ManagerDashboardPage';
-import ManagerReportsPage from './pages/ManagerReportsPage';
-import ManagerTeamPage from './pages/ManagerTeamPage';
-import RecommendationsPage from './pages/RecommendationsPage';
-import RegistrationPage from './pages/RegistrationPage';
-import TrainingPage from './pages/TrainingPage';
+
+const AdminCampaignsPage = lazy(() => import('./pages/AdminCampaignsPage'));
+const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'));
+const AdminDepartmentsPage = lazy(() => import('./pages/AdminDepartmentsPage'));
+const AdminLearningPage = lazy(() => import('./pages/AdminLearningPage'));
+const AdminReportsPage = lazy(() => import('./pages/AdminReportsPage'));
+const AdminUsersPage = lazy(() => import('./pages/AdminUsersPage'));
+const AdminIncidentsPage = lazy(() => import('./pages/AdminIncidentsPage'));
+const DepartmentLeaderboardPage = lazy(() => import('./pages/DepartmentLeaderboardPage'));
+const EmployeeAnalyzerPage = lazy(() => import('./pages/EmployeeAnalyzerPage'));
+const EmployeeBadgesPage = lazy(() => import('./pages/EmployeeBadgesPage'));
+const EmployeeDailyChallengePage = lazy(() => import('./pages/EmployeeDailyChallengePage'));
+const EmployeeDashboardPage = lazy(() => import('./pages/EmployeeDashboardPage'));
+const EmployeeIncidentsPage = lazy(() => import('./pages/EmployeeIncidentsPage'));
+const EmployeeProfilePage = lazy(() => import('./pages/EmployeeProfilePage'));
+const EmployeeSimulationsPage = lazy(() => import('./pages/EmployeeSimulationsPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const ManagerDashboardPage = lazy(() => import('./pages/ManagerDashboardPage'));
+const ManagerReportsPage = lazy(() => import('./pages/ManagerReportsPage'));
+const ManagerTeamPage = lazy(() => import('./pages/ManagerTeamPage'));
+const RecommendationsPage = lazy(() => import('./pages/RecommendationsPage'));
+const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
+const TrainingPage = lazy(() => import('./pages/TrainingPage'));
 
 export default function App() {
   return (
+    <Suspense fallback={<div className="grid min-h-screen place-items-center bg-slate-950 text-slate-300">Loading page…</div>}>
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegistrationPage />} />
@@ -71,5 +74,6 @@ export default function App() {
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </Suspense>
   );
 }

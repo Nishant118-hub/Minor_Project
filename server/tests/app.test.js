@@ -3,7 +3,7 @@ import test from 'node:test';
 import request from 'supertest';
 import app from '../src/app.js';
 import { registrationDefaults, validateAdminInviteCode, validateRegistration } from '../src/validators/authValidator.js';
-import { validateSimulationClassification } from '../src/validators/interactionValidator.js';
+import { validateInteraction, validateSimulationClassification } from '../src/validators/interactionValidator.js';
 import { sendTrainingAssignmentNotifications } from '../src/services/trainingNotificationService.js';
 import { sendSimulationCampaignNotifications } from '../src/services/trainingNotificationService.js';
 import { validateTrainingAssignment } from '../src/validators/trainingAssignmentValidator.js';
@@ -61,6 +61,14 @@ test('simulation classification accepts only safe answer values', () => {
   assert.equal(validateSimulationClassification({ classification: 'LEGITIMATE' }), 'LEGITIMATE');
   assert.equal(validateSimulationClassification({ classification: 'SUSPICIOUS', password: 'ignored' }), 'SUSPICIOUS');
   assert.throws(() => validateSimulationClassification({ classification: 'CREDENTIAL_SUBMITTED' }), /classification must be/);
+});
+
+test('simulation reports record only the report event type', () => {
+  assert.deepEqual(validateInteraction({
+    eventType: 'REPORTED',
+    messageContents: 'discard this value',
+    password: 'discard this value'
+  }), { eventType: 'REPORTED' });
 });
 
 test('resource aliases require authentication', async () => {

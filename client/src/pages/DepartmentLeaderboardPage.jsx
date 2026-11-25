@@ -63,7 +63,7 @@ export default function DepartmentLeaderboardPage() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <span className="rounded bg-amber-500/20 border border-amber-500/40 px-2.5 py-0.5 text-xs font-bold text-amber-300 uppercase tracking-wider">
-                ⚔️ Monthly Team Challenge
+                Monthly Team Challenge
               </span>
               <h2 className="mt-2 text-xl font-bold text-slate-100">{teamChallenge.title}</h2>
               <p className="mt-1 text-xs text-slate-300">{teamChallenge.description}</p>
@@ -83,7 +83,7 @@ export default function DepartmentLeaderboardPage() {
                 </div>
                 <div className="h-2.5 w-full rounded-full bg-slate-800 overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full transition-all"
+                    className="h-full bg-gradient-to-r from-cyan-400 to-emerald-500 rounded-full transition-all"
                     style={{ width: `${challenger.progressPercent}%` }}
                   />
                 </div>
@@ -117,15 +117,7 @@ export default function DepartmentLeaderboardPage() {
               {leaderboard.map((dept, idx) => (
                 <tr key={dept.departmentId} className="hover:bg-slate-800/40 transition-colors">
                   <td className="px-5 py-4 font-bold">
-                    {idx === 0 ? (
-                      <span className="grid h-7 w-7 place-items-center rounded-full bg-amber-400/20 text-amber-400 text-sm">🥇</span>
-                    ) : idx === 1 ? (
-                      <span className="grid h-7 w-7 place-items-center rounded-full bg-slate-400/20 text-slate-300 text-sm">🥈</span>
-                    ) : idx === 2 ? (
-                      <span className="grid h-7 w-7 place-items-center rounded-full bg-amber-700/20 text-amber-600 text-sm">🥉</span>
-                    ) : (
-                      <span className="pl-2 font-mono text-slate-500">#{idx + 1}</span>
-                    )}
+                    <span className="pl-2 font-mono text-slate-400">#{idx + 1}</span>
                   </td>
                   <td className="px-5 py-4 font-semibold text-slate-100">{dept.departmentName}</td>
                   <td className="px-5 py-4 text-slate-400">{dept.employeeCount} active</td>

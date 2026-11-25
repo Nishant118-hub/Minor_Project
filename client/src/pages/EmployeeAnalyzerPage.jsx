@@ -145,7 +145,7 @@ export default function EmployeeAnalyzerPage() {
                 disabled={analyzing}
                 className="rounded-lg bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-400 disabled:opacity-50 transition-colors flex items-center gap-2"
               >
-                {analyzing ? 'Analyzing with AI…' : '🔍 Scan & Explain Red Flags'}
+                {analyzing ? 'Analyzing with AI…' : 'Scan & Explain Red Flags'}
               </button>
             </div>
           </form>
@@ -214,7 +214,6 @@ export default function EmployeeAnalyzerPage() {
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-800 bg-slate-900/40 p-8 text-center text-slate-400">
-              <div className="text-4xl mb-3">🔍</div>
               <p className="font-medium text-slate-300">No message scanned yet</p>
               <p className="mt-1 text-xs max-w-xs text-slate-500">
                 Type or paste a message on the left or select a sample email to see instant red-flag extraction and risk rating.

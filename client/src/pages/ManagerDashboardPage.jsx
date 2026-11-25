@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Bar, BarChart, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { getManagerDashboard } from '../services/dashboardService';
 
-const riskColors = { LOW: '#66876a', MEDIUM: '#ab844f', HIGH: '#a65e55' };
-const chartText = '#81715e';
+const riskColors = { LOW: '#00ff41', MEDIUM: '#a3d8a3', HIGH: '#ff5b5b' };
+const chartText = '#78ae78';
 
 function MetricCard({ label, value, accent = 'text-cyan-400' }) {
   return (
@@ -86,7 +86,7 @@ export default function ManagerDashboardPage() {
               <XAxis dataKey="date" tick={{ fill: chartText, fontSize: 12 }} />
               <YAxis domain={[0, 100]} tick={{ fill: chartText }} />
               <Tooltip />
-              <Line type="monotone" dataKey="averageScore" name="Average score" stroke="#526e57" strokeWidth={3} dot={false} />
+              <Line type="monotone" dataKey="averageScore" name="Average score" stroke="#00ff41" strokeWidth={3} dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>

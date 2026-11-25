@@ -4,31 +4,31 @@ import api from '../services/api';
 const badgeCatalog = [
   {
     name: 'First Training Completed',
-    icon: '🏅',
+    icon: '01',
     description: 'Complete and pass your first assigned security-awareness module.',
     match: (user) => user.trainingProgress?.some((item) => item.status === 'COMPLETED')
   },
   {
     name: 'Quiz Master',
-    icon: '🎯',
+    icon: '02',
     description: 'Score 100% on a training quiz.',
     match: (_user, results) => results.some((result) => result.score === 100)
   },
   {
     name: 'Daily Streak Keeper',
-    icon: '🔥',
+    icon: '03',
     description: 'Complete daily 60-second challenges 3 days in a row.',
     match: (user) => (user.streak?.current || 0) >= 3 || (user.streak?.highest || 0) >= 3
   },
   {
     name: 'Vigilant Reporter',
-    icon: '🚨',
+    icon: '04',
     description: 'Report suspicious emails or potential compromises to SOC.',
     match: (user) => (user.points || 0) >= 15
   },
   {
     name: 'Security Champion',
-    icon: '⭐',
+    icon: '05',
     description: 'Attain top rank in your department and achieve Guardian level status.',
     match: (user) => Boolean(user.isSecurityChampion) || (user.points || 0) >= 120
   }
@@ -158,7 +158,7 @@ export default function EmployeeBadgesPage() {
                 </div>
                 <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-bold">
                   <span className={earned ? 'text-emerald-400' : 'text-slate-500'}>
-                    {earned ? '✓ UNLOCKED' : '🔒 LOCKED'}
+                    {earned ? 'UNLOCKED' : 'LOCKED'}
                   </span>
                   <span className="text-slate-400">Badge</span>
                 </div>
