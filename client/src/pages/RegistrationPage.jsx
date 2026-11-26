@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { register } from '../services/authService';
+import BinaryMatrixRain from '../components/BinaryMatrixRain';
 
 export default function RegistrationPage() {
   const { user } = useAuth();
@@ -56,8 +57,9 @@ export default function RegistrationPage() {
   }
 
   return (
-    <main className="site-camo grid min-h-screen place-items-center p-6 text-slate-100">
-      <form onSubmit={handleSubmit} className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
+    <main className="relative min-h-screen bg-black grid place-items-center p-6 text-slate-100 overflow-hidden">
+      <BinaryMatrixRain opacity={0.65} fontSize={16} />
+      <form onSubmit={handleSubmit} className="relative z-10 w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/90 backdrop-blur-md p-8 shadow-2xl shadow-emerald-950/40">
         <div className="mb-8">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">Secure learning</p>
           <h1 className="mt-2 text-3xl font-bold">Create your account</h1>
