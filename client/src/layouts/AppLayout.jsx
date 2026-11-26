@@ -10,6 +10,7 @@ const linksByRole = {
     ['Campaigns', '/admin/campaigns'],
     ['Reports & Heatmap', '/admin/reports'],
     ['Incidents (SOC)', '/admin/incidents'],
+    ['Metaverse Security', '/admin/metaverse'],
     ['Leaderboard', '/admin/leaderboard']
   ],
   SECURITY_ANALYST: [
@@ -17,6 +18,7 @@ const linksByRole = {
     ['Reports & Heatmap', '/admin/reports'],
     ['Incidents (SOC)', '/admin/incidents'],
     ['Leaderboard', '/admin/leaderboard'],
+    ['Metaverse Security', '/admin/metaverse'],
     ['Campaigns', '/admin/campaigns']
   ],
   MANAGER: [
@@ -35,7 +37,8 @@ const linksByRole = {
     ['Leaderboard', '/employee/leaderboard'],
     ['Recommendations', '/employee/recommendations'],
     ['Badges & Rank', '/employee/badges'],
-    ['Profile', '/employee/profile']
+    ['Profile', '/employee/profile'],
+    ['Metaverse Security', '/employee/metaverse']
   ]
 };
 

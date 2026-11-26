@@ -19,9 +19,32 @@ from app.risk_model import (
     train_synthetic_model,
 )
 from app.schemas import AvailableTrainingModule, FeaturePayload
+from app.schemas import MetaverseAnalysisRequest
+from app.metaverse_engine import analyze_metaverse
 
 
 class AiServiceContractTests(unittest.TestCase):
+    def test_metaverse_analysis_covers_synopsis_topics_and_scenarios(self):
+        result = analyze_metaverse(MetaverseAnalysisRequest(
+            environment="VR",
+            deepfakeConfidence=0.92,
+            packetAnomalyScore=0.88,
+            twinIntegrityScore=0.2,
+            walletAnomalyScore=0.95,
+            federatedRoundVariance=0.9,
+        ))
+
+        topics = {finding["topic"] for finding in result["findings"]}
+        self.assertIn("Biometric continuous authentication", topics)
+        self.assertIn("Deepfake and avatar impersonation", topics)
+        self.assertIn("Metaverse intrusion detection", topics)
+        self.assertIn("Digital-twin integrity", topics)
+        self.assertIn("NFT, wallet, and smart-contract security", topics)
+        self.assertIn("Federated edge learning", topics)
+        self.assertEqual(len(result["attackScenarios"]), 3)
+        self.assertGreaterEqual(result["overallRisk"], 0)
+        self.assertLessEqual(result["overallRisk"], 100)
+
     def make_features(self, **overrides):
         values = {
             "click_rate": 0.05,

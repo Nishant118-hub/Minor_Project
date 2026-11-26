@@ -71,3 +71,28 @@ class ModelTrainingResponse(BaseModel):
 
 class ServiceUnavailableResponse(BaseModel):
     detail: str
+
+
+class MetaverseAnalysisRequest(BaseModel):
+    environment: str = Field(default="VR", max_length=30)
+    authenticationConfidence: float = Field(default=0.8, ge=0, le=1)
+    biometricDrift: float = Field(default=0.1, ge=0, le=1)
+    sessionMinutes: int = Field(default=30, ge=0, le=1440)
+    deepfakeConfidence: float = Field(default=0.1, ge=0, le=1)
+    packetAnomalyScore: float = Field(default=0.1, ge=0, le=1)
+    deviceRiskScore: float = Field(default=0.1, ge=0, le=1)
+    twinIntegrityScore: float = Field(default=1, ge=0, le=1)
+    contractRiskScore: float = Field(default=0.1, ge=0, le=1)
+    nftSimilarityScore: float = Field(default=0.1, ge=0, le=1)
+    walletAnomalyScore: float = Field(default=0.1, ge=0, le=1)
+    federatedRoundVariance: float = Field(default=0.1, ge=0, le=1)
+    participantTrustScore: float = Field(default=0.9, ge=0, le=1)
+
+
+class MetaverseFinding(BaseModel):
+    topic: str
+    status: str
+    riskScore: int = Field(ge=0, le=100)
+    summary: str
+    evidence: list[str] = Field(default_factory=list)
+    mitigations: list[str] = Field(default_factory=list)

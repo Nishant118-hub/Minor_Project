@@ -18,6 +18,7 @@ The codebase already contains the implementation for the major phases of the pla
 - Training progress tracking and gamification
 - Admin tracking for individual training assignments, badges, points, and simulation classifications
 - AI risk prediction and recommendation service
+- Metaverse security laboratory covering XR/VR/AR environments, digital-twin integrity, continuous avatar authentication, deepfake/impersonation signals, intrusion anomalies, NFT and smart-contract risk, federated edge-learning poisoning signals, and attack scenarios
 - Safe phishing simulation APIs and telemetry
 - MongoDB-backed backend with Express + JWT
 - React frontend connected to the backend

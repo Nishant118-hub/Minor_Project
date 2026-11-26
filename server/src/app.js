@@ -20,6 +20,7 @@ import trainingRoutes from './routes/trainingRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import incidentRoutes from './routes/incidentRoutes.js';
 import dailyChallengeRoutes from './routes/dailyChallengeRoutes.js';
+import metaverseRoutes from './routes/metaverseRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { notFound } from './middleware/notFound.js';
 
@@ -55,6 +56,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/incidents', incidentRoutes);
 app.use('/api/daily-challenge', dailyChallengeRoutes);
+app.use('/api/metaverse', metaverseRoutes);
 app.use(notFound);
 app.use(errorHandler);
 

@@ -24,6 +24,14 @@ test('protected auth endpoint rejects requests without a bearer token', async ()
   assert.equal(response.body.message, 'Authentication is required.');
 });
 
+test('metaverse overview and analysis require authentication', async () => {
+  const overview = await request(app).get('/api/metaverse/overview');
+  const analysis = await request(app).post('/api/metaverse/analyze').send({});
+
+  assert.equal(overview.status, 401);
+  assert.equal(analysis.status, 401);
+});
+
 test('registration accepts employee by default and validates requested account types', () => {
   const employee = validateRegistration({
     name: 'Example User',

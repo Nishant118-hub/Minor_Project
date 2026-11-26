@@ -4,8 +4,16 @@ from ..feature_engineering import normalize_features
 from ..recommendation_engine import recommend_training
 from ..risk_model import ml_model_available, predict_ml_risk, predict_rule_based_risk, train_synthetic_model
 from ..schemas import FeaturePayload, ModelTrainingResponse, RecommendationRequest, RecommendationResponse, SyntheticTrainingRequest
+from ..schemas import MetaverseAnalysisRequest
+from ..metaverse_engine import analyze_metaverse
 
 router = APIRouter(tags=["AI service"])
+
+
+@router.post("/analyze-metaverse")
+def analyze_metaverse_endpoint(request: MetaverseAnalysisRequest) -> dict[str, object]:
+    """Analyze bounded metaverse security signals with explainable defensive rules."""
+    return analyze_metaverse(request)
 
 
 @router.post("/extract-features")

@@ -26,6 +26,7 @@ const ManagerTeamPage = lazy(() => import('./pages/ManagerTeamPage'));
 const RecommendationsPage = lazy(() => import('./pages/RecommendationsPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
 const TrainingPage = lazy(() => import('./pages/TrainingPage'));
+const MetaverseSecurityPage = lazy(() => import('./pages/MetaverseSecurityPage'));
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
             <Route path="/admin/campaigns" element={<AdminCampaignsPage />} />
             <Route path="/admin/reports" element={<AdminReportsPage />} />
             <Route path="/admin/incidents" element={<AdminIncidentsPage />} />
+            <Route path="/admin/metaverse" element={<MetaverseSecurityPage />} />
             <Route path="/admin/leaderboard" element={<DepartmentLeaderboardPage />} />
           </Route>
 
@@ -69,6 +71,7 @@ export default function App() {
             <Route path="/employee/recommendations" element={<RecommendationsPage />} />
             <Route path="/employee/badges" element={<EmployeeBadgesPage />} />
             <Route path="/employee/profile" element={<EmployeeProfilePage />} />
+            <Route path="/employee/metaverse" element={<MetaverseSecurityPage />} />
           </Route>
         </Route>
       </Route>
