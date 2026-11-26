@@ -16,6 +16,7 @@ export default function RegistrationPage() {
   });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAdminInviteCode, setShowAdminInviteCode] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -88,18 +89,22 @@ export default function RegistrationPage() {
 
         {form.role === 'ADMIN' && (
           <div className="mb-4">
-            <label className="block text-sm font-medium">
-              Admin invite code
+            <label htmlFor="registration-admin-invite-code" className="block text-sm font-medium">Admin invite code</label>
+            <div className="mt-1 flex overflow-hidden rounded-lg border border-slate-700 bg-slate-950 transition-colors focus-within:border-cyan-400">
               <input
+                id="registration-admin-invite-code"
                 required
                 name="adminInviteCode"
-                type="password"
+                type={showAdminInviteCode ? 'text' : 'password'}
                 autoComplete="off"
                 value={form.adminInviteCode}
                 onChange={updateField}
-                className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none transition-colors focus:border-cyan-400"
+                className="min-w-0 flex-1 bg-transparent px-3 py-2 outline-none"
               />
-            </label>
+              <button type="button" aria-label={showAdminInviteCode ? 'Hide admin invite code' : 'Show admin invite code'} aria-pressed={showAdminInviteCode} onClick={() => setShowAdminInviteCode((visible) => !visible)} className="px-3 text-xs font-semibold text-cyan-400 hover:text-cyan-300">
+                {showAdminInviteCode ? 'Hide' : 'Show'}
+              </button>
+            </div>
             <p className="mt-1 text-xs text-slate-400">Admin registration requires a code from your system administrator.</p>
           </div>
         )}
