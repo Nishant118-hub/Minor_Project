@@ -13,8 +13,8 @@ import { validateCampaignCreate } from '../src/validators/campaignValidator.js';
 test('health endpoint reports the server status', async () => {
   const response = await request(app).get('/health');
 
-  assert.equal(response.status, 200);
-  assert.deepEqual(response.body, { service: 'server', status: 'ok' });
+  assert.equal(response.status, 503);
+  assert.deepEqual(response.body, { service: 'server', status: 'degraded', database: 'unavailable' });
 });
 
 test('protected auth endpoint rejects requests without a bearer token', async () => {

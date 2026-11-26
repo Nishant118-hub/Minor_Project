@@ -4,6 +4,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import mongoose from 'mongoose';
 import authRoutes from './routes/authRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
 import assessmentRoutes from './routes/assessmentRoutes.js';
@@ -35,7 +36,12 @@ app.use(morgan('dev'));
 app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, max: 200, skipSuccessfulRequests: true }));
 
 app.get('/health', (_request, response) => {
-  response.json({ service: 'server', status: 'ok' });
+  const databaseConnected = mongoose.connection.readyState === 1;
+  response.status(databaseConnected ? 200 : 503).json({
+    service: 'server',
+    status: databaseConnected ? 'ok' : 'degraded',
+    database: databaseConnected ? 'connected' : 'unavailable'
+  });
 });
 
 app.use('/api/auth', authRoutes);
