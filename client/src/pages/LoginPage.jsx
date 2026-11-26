@@ -31,7 +31,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center bg-slate-950 p-6 text-slate-100">
+    <main className="site-camo grid min-h-screen place-items-center p-6 text-slate-100">
       <form onSubmit={handleSubmit} className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
         <div className="mb-8"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">Secure learning</p><h1 className="mt-2 text-3xl font-bold">Sign in</h1><p className="mt-2 text-sm text-slate-400">Use your approved internal training account.</p></div>
         {notice && <p role="status" className="mb-4 rounded-lg border border-emerald-800 bg-emerald-950/40 p-3 text-sm text-emerald-200">{notice}</p>}

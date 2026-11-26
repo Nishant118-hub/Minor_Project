@@ -6,7 +6,7 @@ export default function ProtectedRoute({ allowedRoles }) {
   const location = useLocation();
 
   if (isLoading) {
-    return <div className="grid min-h-screen place-items-center bg-slate-950 text-slate-200">Restoring secure session…</div>;
+    return <div className="site-camo grid min-h-screen place-items-center text-slate-200">Restoring secure session…</div>;
   }
   if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
   if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/" replace />;

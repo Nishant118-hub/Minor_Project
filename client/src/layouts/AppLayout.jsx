@@ -47,7 +47,7 @@ export default function AppLayout() {
   const links = linksByRole[user.role] || [];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 md:grid md:grid-cols-[240px_minmax(0,1fr)]">
+    <div className="site-camo min-h-screen text-slate-100 md:grid md:grid-cols-[240px_minmax(0,1fr)]">
       <aside className="border-b border-slate-800 bg-slate-900 p-4 md:sticky md:top-0 md:h-screen md:border-b-0 md:border-r md:p-5 flex flex-col justify-between">
         <div>
           <div className="mb-6 flex items-center gap-3">

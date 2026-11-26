@@ -56,7 +56,7 @@ export default function RegistrationPage() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center bg-slate-950 p-6 text-slate-100">
+    <main className="site-camo grid min-h-screen place-items-center p-6 text-slate-100">
       <form onSubmit={handleSubmit} className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
         <div className="mb-8">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">Secure learning</p>

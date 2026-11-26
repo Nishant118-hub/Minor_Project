@@ -30,7 +30,7 @@ const MetaverseSecurityPage = lazy(() => import('./pages/MetaverseSecurityPage')
 
 export default function App() {
   return (
-    <Suspense fallback={<div className="grid min-h-screen place-items-center bg-slate-950 text-slate-300">Loading page…</div>}>
+    <Suspense fallback={<div className="site-camo grid min-h-screen place-items-center text-slate-300">Loading page…</div>}>
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegistrationPage />} />
