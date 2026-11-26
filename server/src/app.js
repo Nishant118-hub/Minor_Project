@@ -37,9 +37,18 @@ app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, max: 200, skipSuccessfulRe
 
 app.get('/health', (_request, response) => {
   const databaseConnected = mongoose.connection.readyState === 1;
+  response.json({
+    service: 'server',
+    status: 'ok',
+    database: databaseConnected ? 'connected' : 'unavailable'
+  });
+});
+
+app.get('/ready', (_request, response) => {
+  const databaseConnected = mongoose.connection.readyState === 1;
   response.status(databaseConnected ? 200 : 503).json({
     service: 'server',
-    status: databaseConnected ? 'ok' : 'degraded',
+    status: databaseConnected ? 'ready' : 'not_ready',
     database: databaseConnected ? 'connected' : 'unavailable'
   });
 });

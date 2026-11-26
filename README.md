@@ -180,6 +180,7 @@ The idempotent seed creates one admin, three managers, five employees, ten lesso
 
 - Frontend: http://localhost:5173
 - Backend: http://localhost:5000/health
+- Backend database readiness: http://localhost:5000/ready
 - AI service: http://localhost:8000/health
 - AI docs: http://localhost:8000/docs
 
@@ -313,6 +314,8 @@ The AI service is limited to defensive risk scoring and training recommendations
 - POST `/predict-risk?use_ml_model=true`
 - POST `/recommend-training`
 - Local production training: `python train_from_csv.py .\data\risk_training.csv` from `ai-service`
+
+The backend `/health` endpoint reports process liveness for Render. `/ready` reports whether MongoDB is connected and returns HTTP 503 while the database is unavailable.
 
 ## Notes for VS Code / Windows
 
