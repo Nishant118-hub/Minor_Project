@@ -31,16 +31,32 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="site-camo grid min-h-screen place-items-center p-6 text-slate-100">
-      <form onSubmit={handleSubmit} className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
-        <div className="mb-8"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">Secure learning</p><h1 className="mt-2 text-3xl font-bold">Sign in</h1><p className="mt-2 text-sm text-slate-400">Use your approved internal training account.</p></div>
-        {notice && <p role="status" className="mb-4 rounded-lg border border-emerald-800 bg-emerald-950/40 p-3 text-sm text-emerald-200">{notice}</p>}
-        {error && <p role="alert" className="mb-4 rounded-lg border border-rose-800 bg-rose-950/40 p-3 text-sm text-rose-200">{error}</p>}
-        <label className="mb-4 block text-sm font-medium">Email<input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-cyan-400" /></label>
-        <label className="mb-6 block text-sm font-medium">Password<input required type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-cyan-400" /></label>
-        <button disabled={isSubmitting} className="w-full rounded-lg bg-cyan-500 px-4 py-2.5 font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-60">{isSubmitting ? 'Signing in…' : 'Sign in'}</button>
-        <p className="mt-6 text-center text-sm text-slate-400">New to the platform? <Link to="/register" className="font-semibold text-cyan-300 hover:text-cyan-200">Create an employee account</Link></p>
-      </form>
+    <main className="site-camo grid min-h-screen text-slate-100 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+      <section className="flex min-h-screen items-center justify-start p-6 sm:p-10 lg:px-12 xl:px-20">
+        <form onSubmit={handleSubmit} className="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900/95 p-8 shadow-2xl">
+          <div className="mb-8"><p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">Secure learning</p><h1 className="mt-2 text-3xl font-bold">Sign in</h1><p className="mt-2 text-sm text-slate-400">Use your approved internal training account.</p></div>
+          {notice && <p role="status" className="mb-4 rounded-lg border border-emerald-800 bg-emerald-950/40 p-3 text-sm text-emerald-200">{notice}</p>}
+          {error && <p role="alert" className="mb-4 rounded-lg border border-rose-800 bg-rose-950/40 p-3 text-sm text-rose-200">{error}</p>}
+          <label className="mb-4 block text-sm font-medium">Email<input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-cyan-400" /></label>
+          <label className="mb-6 block text-sm font-medium">Password<input required type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-cyan-400" /></label>
+          <button disabled={isSubmitting} className="w-full rounded-lg bg-cyan-500 px-4 py-2.5 font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-60">{isSubmitting ? 'Signing in…' : 'Sign in'}</button>
+          <p className="mt-6 text-center text-sm text-slate-400">New to the platform? <Link to="/register" className="font-semibold text-cyan-300 hover:text-cyan-200">Create an employee account</Link></p>
+        </form>
+      </section>
+      <aside className="hidden min-h-screen items-center justify-center px-10 py-12 lg:flex xl:px-16">
+        <div className="w-full max-w-2xl">
+          <img
+            src="/hacker-workstation.svg"
+            alt="Illustration of a hooded cybersecurity analyst working at a computer"
+            className="mx-auto w-full drop-shadow-[0_24px_60px_rgba(0,0,0,0.35)]"
+          />
+          <div className="mx-auto mt-2 max-w-lg text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">Cyber awareness</p>
+            <h2 className="mt-3 text-2xl font-bold text-slate-100">Stay alert. Stay protected.</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-300">Build the habits that keep people and systems safer online.</p>
+          </div>
+        </div>
+      </aside>
     </main>
   );
 }
