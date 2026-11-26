@@ -20,12 +20,12 @@ body {
 .site-camo {
   background-color: #20241b;
   background-image:
-    linear-gradient(160deg, rgba(20, 25, 17, 0.4), rgba(20, 25, 17, 0.72)),
+    linear-gradient(160deg, rgba(20, 25, 17, 0.58), rgba(20, 25, 17, 0.78)),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 192'%3E%3Crect width='256' height='192' fill='%2323291e'/%3E%3Cpath d='M0 0h56v16h24v24H64v24H0z' fill='%233f482f'/%3E%3Cpath d='M104 0h48v24h24v32h-16v16h-40V48h-16z' fill='%23534834'/%3E%3Cpath d='M192 0h64v40h-24v16h-32V32h-8z' fill='%235e6141'/%3E%3Cpath d='M0 88h24V72h40v24h24v40H64v16H0z' fill='%23333e2b'/%3E%3Cpath d='M112 80h32V64h48v32h24v24h-40v24h-64v-32h16z' fill='%234a5034'/%3E%3Cpath d='M216 72h40v48h-16v24h-48v-32h24z' fill='%23493b2b'/%3E%3Cpath d='M16 168h48v-16h40v40H0v-24z' fill='%235c5238'/%3E%3Cpath d='M128 160h40v-16h48v24h40v24H128z' fill='%233b432d'/%3E%3Cpath d='M80 48h16v16H80zM88 144h16v16H88zM176 48h16v16h-16z' fill='%23716648'/%3E%3C/svg%3E");
   background-attachment: fixed;
   background-position: center, top left;
   background-repeat: no-repeat, repeat;
-  background-size: cover, 256px 192px;
+  background-size: cover, 160px 120px;
 }
 
 ::selection {
