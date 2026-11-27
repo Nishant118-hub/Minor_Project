@@ -16,6 +16,7 @@ export default function LoginPage() {
   const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notice, setNotice] = useState(location.state?.registered ? 'Account created. Sign in with your new credentials.' : '');
@@ -64,16 +65,29 @@ export default function LoginPage() {
               className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950/80 px-3.5 py-2.5 text-slate-100 outline-none focus:border-cyan-400 transition-colors"
             />
           </label>
-          <label className="mb-6 block text-sm font-medium text-slate-300">
-            Password
-            <input
-              required
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950/80 px-3.5 py-2.5 text-slate-100 outline-none focus:border-cyan-400 transition-colors"
-            />
-          </label>
+          <div className="mb-6">
+            <label htmlFor="login-password" className="block text-sm font-medium text-slate-300">Password</label>
+            <div className="mt-1 flex overflow-hidden rounded-lg border border-slate-700 bg-slate-950/80 transition-colors focus-within:border-cyan-400">
+              <input
+                id="login-password"
+                required
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="min-w-0 flex-1 bg-transparent px-3.5 py-2.5 text-slate-100 outline-none"
+              />
+              <button
+                type="button"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-pressed={showPassword}
+                onClick={() => setShowPassword((visible) => !visible)}
+                className="px-3 text-xs font-semibold text-cyan-400 hover:text-cyan-300"
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
+          </div>
           <button
             disabled={isSubmitting}
             className="w-full rounded-lg bg-cyan-500 px-4 py-2.5 font-bold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-60 shadow-matrix"

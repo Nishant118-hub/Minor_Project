@@ -5,6 +5,9 @@ import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import './index.css';
 
+document.documentElement.dataset.theme = 'dark';
+document.documentElement.style.colorScheme = 'dark';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
