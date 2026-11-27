@@ -9,21 +9,18 @@ export async function ensureBootstrapAdmin() {
     throw new Error('Set a valid BOOTSTRAP_ADMIN_EMAIL and a BOOTSTRAP_ADMIN_PASSWORD of 8 to 128 characters.');
   }
 
-  let admin = await User.findOne({ email }).select('+password');
+  const admin = await User.findOne({ email });
   if (admin && admin.role !== 'ADMIN') {
     throw new Error('The configured bootstrap admin email is already used by a non-admin account.');
   }
 
   if (!admin) {
-    admin = await User.create({
+    await User.create({
       name: 'Platform Administrator',
       email,
       password,
       role: 'ADMIN'
     });
-  } else if (!(await admin.comparePassword(password))) {
-    admin.password = password;
-    await admin.save();
   }
 
   if (email !== 'admin@cyber.local') {

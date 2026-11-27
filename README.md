@@ -174,7 +174,7 @@ cd d:\Nishant\Minor Project
 npm run seed
 ```
 
-The idempotent seed requires `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in `server/.env`. It creates or updates that admin account, three managers, five employees, ten lessons with 30 quiz questions, five active in-app simulation scenarios, and sample quiz history for each employee. Passwords are bcrypt-hashed before storage. Simulations are assigned only to seeded participants; no messages are emailed and no external links are used.
+The idempotent seed requires `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in `server/.env`. It creates the configured admin account if missing, then seeds three managers, five employees, ten lessons with 30 quiz questions, five active in-app simulation scenarios, and sample quiz history for each employee. Existing admin passwords are not changed. Passwords are bcrypt-hashed before storage. Simulations are assigned only to seeded participants; no messages are emailed and no external links are used.
 
 ## 7) Access the app
 
@@ -186,7 +186,7 @@ The idempotent seed requires `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWO
 
 ### Account registration
 
-Employee registration is open; admin self-registration is disabled in both the interface and API. To create or update the administrator account, set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in the server environment and run `npm run bootstrap-admin --prefix server`. This command provisions only the configured admin account and does not create demo users. Keep the password private and do not commit `.env` files.
+Employee registration is open; admin self-registration is disabled in both the interface and API. Set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in the server environment. On startup, the API creates that admin account only if it does not already exist. Existing admin passwords are not reset. The `npm run bootstrap-admin --prefix server` command can also provision the account manually without creating demo users. Keep the password private and do not commit `.env` files.
 
 ## 8) Validate the AI service
 
@@ -205,7 +205,7 @@ The root `render.yaml` defines the frontend, Express API, and AI service. To dep
 
 1. Push the project to GitHub and create a new Blueprint in the Render Dashboard using this repository and its `main` branch.
 2. Create a MongoDB Atlas database. Enter its connection string as `MONGO_URI` when Render prompts for the Blueprint variable. Keep Atlas network access restricted to the required Render egress IP ranges; do not commit the connection string.
-3. Deploy the Blueprint and set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in the API service environment. Run `npm run bootstrap-admin` from the server directory to provision the administrator without creating demo users.
+3. Deploy the Blueprint and set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in the API service environment. The API provisions the administrator on startup without creating demo users.
 4. If Render reports a hostname conflict for one of the service names, update the affected service name and the matching API/frontend URL values in `render.yaml`, then sync the Blueprint.
 
 Email notices are not configured by default. AI predictions use the service's defensive fallback until you provide an approved, human-labeled dataset and train a model locally. Do not seed the public deployment with development demo accounts.
