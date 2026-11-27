@@ -2,7 +2,7 @@ import User from '../models/User.js';
 import AppError from '../utils/AppError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { createToken } from '../utils/token.js';
-import { registrationDefaults, validateAdminInviteCode, validateLogin, validateRegistration } from '../validators/authValidator.js';
+import { registrationDefaults, validateLogin, validateRegistration } from '../validators/authValidator.js';
 
 function userResponse(user) {
   return {
@@ -26,10 +26,7 @@ function userResponse(user) {
 }
 
 export const register = asyncHandler(async (request, response) => {
-  const { name, email, password, role, adminInviteCode } = validateRegistration(request.body);
-  if (role === 'ADMIN') {
-    validateAdminInviteCode(adminInviteCode, process.env.ADMIN_REGISTRATION_CODE);
-  }
+  const { name, email, password, role } = validateRegistration(request.body);
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {

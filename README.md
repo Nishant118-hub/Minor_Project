@@ -80,8 +80,8 @@ Then set the values in the `.env` files, for example:
   AI_USE_ML_MODEL=true
   CLIENT_URL=http://localhost:5173
   APP_BASE_URL=http://localhost:5173
-  # Optional: at least 32 characters; keep private and share only with approved admins.
-  ADMIN_REGISTRATION_CODE=
+  BOOTSTRAP_ADMIN_EMAIL=admin@example.com
+  BOOTSTRAP_ADMIN_PASSWORD=replace_with_a_unique_password
   # Optional: assignment notices only go to these comma-separated internal domains.
   SMTP_HOST=
   SMTP_PORT=587
@@ -174,7 +174,7 @@ cd d:\Nishant\Minor Project
 npm run seed
 ```
 
-The idempotent seed creates one admin, three managers, five employees, ten lessons with 30 quiz questions, five active in-app simulation scenarios, and sample quiz history for each employee. Demo passwords are bcrypt-hashed before storage. Simulations are assigned only to seeded participants; no messages are emailed and no external links are used.
+The idempotent seed requires `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in `server/.env`. It creates or updates that admin account, three managers, five employees, ten lessons with 30 quiz questions, five active in-app simulation scenarios, and sample quiz history for each employee. Passwords are bcrypt-hashed before storage. Simulations are assigned only to seeded participants; no messages are emailed and no external links are used.
 
 ## 7) Access the app
 
@@ -186,7 +186,7 @@ The idempotent seed creates one admin, three managers, five employees, ten lesso
 
 ### Account registration
 
-Employee registration is open. Admin registration is only enabled when the backend has a private `ADMIN_REGISTRATION_CODE` set to a random value of at least 32 characters. Generate one locally, for example with `python -c "import secrets; print(secrets.token_urlsafe(32))"`, put it in `server/.env`, and share it only with approved administrators. Never commit or publish the code. Without a configured code, admin sign-up is rejected; existing admin account creation by an authenticated administrator is unchanged.
+Employee registration is open; admin self-registration is disabled in both the interface and API. To create or update the administrator account, set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in the server environment and run `npm run bootstrap-admin --prefix server`. This command provisions only the configured admin account and does not create demo users. Keep the password private and do not commit `.env` files.
 
 ## 8) Validate the AI service
 
@@ -205,7 +205,7 @@ The root `render.yaml` defines the frontend, Express API, and AI service. To dep
 
 1. Push the project to GitHub and create a new Blueprint in the Render Dashboard using this repository and its `main` branch.
 2. Create a MongoDB Atlas database. Enter its connection string as `MONGO_URI` when Render prompts for the Blueprint variable. Keep Atlas network access restricted to the required Render egress IP ranges; do not commit the connection string.
-3. Deploy the Blueprint. It generates `JWT_SECRET` and `ADMIN_REGISTRATION_CODE`. View the latter in the API service's environment settings when creating the first admin account.
+3. Deploy the Blueprint and set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in the API service environment. Run `npm run bootstrap-admin` from the server directory to provision the administrator without creating demo users.
 4. If Render reports a hostname conflict for one of the service names, update the affected service name and the matching API/frontend URL values in `render.yaml`, then sync the Blueprint.
 
 Email notices are not configured by default. AI predictions use the service's defensive fallback until you provide an approved, human-labeled dataset and train a model locally. Do not seed the public deployment with development demo accounts.
@@ -214,11 +214,10 @@ Render's free web services can sleep when idle and may take a short time to resp
 
 ## Demo Accounts
 
-Run the seed script before logging in. These development-only accounts are created by `server/src/seed/index.js`:
+Run the seed script before logging in. The administrator credentials come from `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in `server/.env`. These development-only accounts are created by `server/src/seed/index.js`:
 
 | Role | Email | Password |
 | --- | --- | --- |
-| Admin | `admin@cyber.local` | `Admin@123` |
 | Security Analyst | `analyst@cyber.local` | `Analyst@123` |
 | Manager | `manager@cyber.local` | `Manager@123` |
 | Manager | `eng.manager@cyber.local` | `Manager@123` |

@@ -10,6 +10,7 @@ import TrainingModule from '../models/TrainingModule.js';
 import { connectDatabase } from '../config/db.js';
 import { getCampaignTemplate } from '../services/campaignTemplates.js';
 import { calculateAndStoreRiskProfile } from '../services/riskProfileService.js';
+import { ensureBootstrapAdmin } from '../services/bootstrapAdminService.js';
 
 dotenv.config();
 
@@ -33,9 +34,9 @@ async function seedDepartments() {
 
 async function seedUsers(departments) {
   const [securityOps, engineering, hr] = departments;
+  const admin = await ensureBootstrapAdmin();
 
   const users = [
-    { name: 'Admin User', email: 'admin@cyber.local', password: 'Admin@123', role: 'ADMIN' },
     { name: 'Security Analyst', email: 'analyst@cyber.local', password: 'Analyst@123', role: 'SECURITY_ANALYST', department: securityOps._id },
     { name: 'Security Manager', email: 'manager@cyber.local', password: 'Manager@123', role: 'MANAGER', department: securityOps._id },
     { name: 'Engineering Manager', email: 'eng.manager@cyber.local', password: 'Manager@123', role: 'MANAGER', department: engineering._id },
@@ -47,15 +48,15 @@ async function seedUsers(departments) {
     { name: 'Zoe Patel', email: 'zoe@cyber.local', password: 'Employee@123', role: 'EMPLOYEE', department: hr._id, isSimulationParticipant: true, points: 30, level: 'Rookie' }
   ];
 
-  const createdUsers = await Promise.all(
+  const demoUsers = await Promise.all(
     users.map(async (user) => {
       const existing = await User.findOne({ email: user.email });
       if (existing) return existing;
       return User.create(user);
     })
   );
+  const createdUsers = [admin, ...demoUsers];
 
-  const admin = createdUsers.find((user) => user.role === 'ADMIN');
   const managers = createdUsers.filter((user) => user.role === 'MANAGER');
 
   for (const manager of managers) {

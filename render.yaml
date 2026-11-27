@@ -14,8 +14,10 @@ services:
         generateValue: true
       - key: JWT_EXPIRES_IN
         value: 1d
-      - key: ADMIN_REGISTRATION_CODE
-        generateValue: true
+      - key: BOOTSTRAP_ADMIN_EMAIL
+        sync: false
+      - key: BOOTSTRAP_ADMIN_PASSWORD
+        sync: false
       - key: CLIENT_URL
         value: https://minor-project-nishant118-client.onrender.com
       - key: APP_BASE_URL

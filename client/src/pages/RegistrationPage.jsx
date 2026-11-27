@@ -10,14 +10,11 @@ export default function RegistrationPage() {
   const [form, setForm] = useState({
     name: '',
     email: '',
-    role: 'EMPLOYEE',
-    adminInviteCode: '',
     password: '',
     confirmPassword: ''
   });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showAdminInviteCode, setShowAdminInviteCode] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -45,8 +42,7 @@ export default function RegistrationPage() {
         name: form.name.trim(),
         email: form.email.trim(),
         password: form.password,
-        role: form.role,
-        ...(form.role === 'ADMIN' ? { adminInviteCode: form.adminInviteCode } : {})
+        role: 'EMPLOYEE'
       });
       navigate('/login', { replace: true, state: { registered: true } });
     } catch (requestError) {
@@ -63,53 +59,10 @@ export default function RegistrationPage() {
         <div className="mb-8">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">Secure learning</p>
           <h1 className="mt-2 text-3xl font-bold">Create your account</h1>
-          <p className="mt-2 text-sm text-slate-400">Choose the account type you need to get started.</p>
+          <p className="mt-2 text-sm text-slate-400">Create an employee account to get started.</p>
         </div>
 
         {error && <p role="alert" className="mb-4 rounded-lg border border-rose-800 bg-rose-950/40 p-3 text-sm text-rose-200">{error}</p>}
-
-        <fieldset className="mb-5">
-          <legend className="mb-2 text-sm font-medium">Account type</legend>
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              ['EMPLOYEE', 'Employee'],
-              ['ADMIN', 'Admin']
-            ].map(([role, label]) => (
-              <label key={role} className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-3 text-sm transition-colors ${form.role === role ? 'border-cyan-400 bg-emerald-950/30 text-slate-100' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}`}>
-                <input
-                  type="radio"
-                  name="role"
-                  value={role}
-                  checked={form.role === role}
-                  onChange={(event) => setForm((current) => ({ ...current, role: event.target.value }))}
-                />
-                <span>{label}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        {form.role === 'ADMIN' && (
-          <div className="mb-4">
-            <label htmlFor="registration-admin-invite-code" className="block text-sm font-medium">Admin invite code</label>
-            <div className="mt-1 flex overflow-hidden rounded-lg border border-slate-700 bg-slate-950 transition-colors focus-within:border-cyan-400">
-              <input
-                id="registration-admin-invite-code"
-                required
-                name="adminInviteCode"
-                type={showAdminInviteCode ? 'text' : 'password'}
-                autoComplete="off"
-                value={form.adminInviteCode}
-                onChange={updateField}
-                className="min-w-0 flex-1 bg-transparent px-3 py-2 outline-none"
-              />
-              <button type="button" aria-label={showAdminInviteCode ? 'Hide admin invite code' : 'Show admin invite code'} aria-pressed={showAdminInviteCode} onClick={() => setShowAdminInviteCode((visible) => !visible)} className="px-3 text-xs font-semibold text-cyan-400 hover:text-cyan-300">
-                {showAdminInviteCode ? 'Hide' : 'Show'}
-              </button>
-            </div>
-            <p className="mt-1 text-xs text-slate-400">Admin registration requires a code from your system administrator.</p>
-          </div>
-        )}
 
         <label className="mb-4 block text-sm font-medium">
           Full name
@@ -139,7 +92,7 @@ export default function RegistrationPage() {
         </div>
 
         <button disabled={isSubmitting} className="w-full rounded-lg bg-cyan-500 px-4 py-2.5 font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-60">
-          {isSubmitting ? 'Creating account…' : `Create ${form.role === 'ADMIN' ? 'admin' : 'employee'} account`}
+          {isSubmitting ? 'Creating account…' : 'Create employee account'}
         </button>
         <p className="mt-6 text-center text-sm text-slate-400">Already registered? <Link to="/login" className="font-semibold text-cyan-300 hover:text-cyan-200">Sign in</Link></p>
       </form>

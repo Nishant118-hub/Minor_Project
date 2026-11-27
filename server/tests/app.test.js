@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import request from 'supertest';
 import app from '../src/app.js';
-import { registrationDefaults, validateAdminInviteCode, validateRegistration } from '../src/validators/authValidator.js';
+import { registrationDefaults, validateRegistration } from '../src/validators/authValidator.js';
 import { validateInteraction, validateSimulationClassification } from '../src/validators/interactionValidator.js';
 import { sendTrainingAssignmentNotifications } from '../src/services/trainingNotificationService.js';
 import { sendSimulationCampaignNotifications } from '../src/services/trainingNotificationService.js';
@@ -39,7 +39,7 @@ test('metaverse overview and analysis require authentication', async () => {
   assert.equal(analysis.status, 401);
 });
 
-test('registration accepts employee by default and validates requested account types', () => {
+test('registration accepts employees and rejects privileged account types', () => {
   const employee = validateRegistration({
     name: 'Example User',
     email: 'employee@example.com',
@@ -61,14 +61,19 @@ test('registration accepts employee by default and validates requested account t
     email: 'admin@example.com',
     password: 'a-secure-password',
     role: 'ADMIN'
-  }), /admin invite code is required/);
+  }), /Account type must be EMPLOYEE/);
 });
 
-test('admin registration requires the configured invite code', () => {
-  const configuredCode = 'a-private-admin-invite-code-with-at-least-32-characters';
-  assert.throws(() => validateAdminInviteCode('wrong', configuredCode), /valid admin invite code/);
-  assert.throws(() => validateAdminInviteCode(configuredCode, undefined), /not configured correctly/);
-  assert.doesNotThrow(() => validateAdminInviteCode(configuredCode, configuredCode));
+test('registration API rejects admin self-registration', async () => {
+  const response = await request(app).post('/api/auth/register').send({
+    name: 'Example Admin',
+    email: 'admin@example.com',
+    password: 'a-secure-password',
+    role: 'ADMIN'
+  });
+
+  assert.equal(response.status, 400);
+  assert.equal(response.body.message, 'Account type must be EMPLOYEE.');
 });
 
 test('simulation classification accepts only safe answer values', () => {
