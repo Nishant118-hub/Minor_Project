@@ -2,6 +2,8 @@
 
 A full-stack cybersecurity awareness platform for internal employee training, safe phishing simulations, AI-assisted risk scoring, and personalized recommendations.
 
+[Open the live application](https://minor-project-nishant118-client.onrender.com) · [GitHub repository](https://github.com/Nishant118-hub/Minor_Project)
+
 ## Safety boundary
 
 This project is designed for authorized, consent-based internal training only. It never generates or sends deceptive phishing emails, never collects real credentials, never sends email to domains outside the configured internal allowlist, and never stores sensitive credentials in telemetry.
@@ -10,7 +12,7 @@ This project is designed for authorized, consent-based internal training only. I
 
 The codebase already contains the implementation for the major phases of the platform, including:
 
-- Authentication and role-based access
+- Authentication and role-based access, with a dark-only interface, login password visibility control, employee-only self-registration, and environment-configured administrator bootstrap
 - Admin, manager, and employee dashboard views
 - User and department management
 - Training modules and quizzes
@@ -177,6 +179,16 @@ npm run seed
 The idempotent seed requires `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in `server/.env`. It creates the configured admin account if missing, then seeds three managers, five employees, ten lessons with 30 quiz questions, five active in-app simulation scenarios, and sample quiz history for each employee. Existing admin passwords are not changed. Passwords are bcrypt-hashed before storage. Simulations are assigned only to seeded participants; no messages are emailed and no external links are used.
 
 ## 7) Access the app
+
+### Hosted deployment
+
+- Application: [Cyber Awareness Platform](https://minor-project-nishant118-client.onrender.com)
+- Backend health: [API health](https://minor-project-nishant118-api.onrender.com/health) · [Database readiness](https://minor-project-nishant118-api.onrender.com/ready)
+- AI service: [Health](https://minor-project-nishant118-ai.onrender.com/health) · [API docs](https://minor-project-nishant118-ai.onrender.com/docs)
+
+The hosted services use a separate production database and environment variables from local development. The administrator is provisioned from `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` in the API service environment; do not use local demo accounts on the public deployment.
+
+### Local development
 
 - Frontend: http://localhost:5173
 - Backend: http://localhost:5000/health
